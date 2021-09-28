@@ -80,9 +80,16 @@ namespace CoreCharacter
             Vector3 newPosition = transform.position + velocity;
 
             if (movementValues.isCharacterBidimensional && rb2D)
+            {
                 rb2D.MovePosition(new Vector2(newPosition.x, newPosition.y));
+
+                if (moveInputValue != Vector3.zero)
+                    transform.rotation = moveInputValue.x < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+            }
             else if (rb)
+            {
                 rb.MovePosition(newPosition);
+            }
 
         }
 

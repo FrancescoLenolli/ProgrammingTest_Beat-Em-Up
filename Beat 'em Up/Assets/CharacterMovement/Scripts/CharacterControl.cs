@@ -6,9 +6,11 @@ namespace CoreCharacter
     public class CharacterControl : MonoBehaviour
     {
         [SerializeField]
-        private MovementValues movementValues = null;
-        private CharacterInput characterInput;
-        private CharacterMovement characterMovement;
+        protected MovementValues movementValues = null;
+
+        protected CharacterInput characterInput;
+        protected CharacterMovement characterMovement;
+
         private Rigidbody rb;
         private Rigidbody2D rb2D;
 

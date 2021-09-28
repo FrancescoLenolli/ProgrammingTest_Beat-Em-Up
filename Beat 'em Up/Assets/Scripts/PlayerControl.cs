@@ -1,21 +1,24 @@
 ﻿using CoreCharacter;
 using CoreCharacter.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControl : CharacterControl
 {
-    private CharacterAnimator animator;
+    private Animator animator;
+    private CharacterAnimator characterAnimator;
 
     protected override void SetUp()
     {
         base.SetUp();
+        characterAnimator.SetUp(animator);
+        characterInput.ActionMove += characterAnimator.HandleAnimation;
+        characterInput.ActionAttack += characterAnimator.AttackAnimation;
     }
 
     protected override void GetComponents()
     {
         base.GetComponents();
-        animator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
+        animator = GetComponent<Animator>();
+        characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
     }
 }
