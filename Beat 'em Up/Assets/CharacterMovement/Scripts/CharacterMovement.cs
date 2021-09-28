@@ -6,7 +6,8 @@ namespace CoreCharacter
     public class CharacterMovement : MonoBehaviour
     {
         private MovementValues movementValues;
-        private new Rigidbody rigidbody;
+        private Rigidbody rb;
+        private Rigidbody2D rb2D;
         private Vector3 moveInputValue;
         private bool canJump;
         private bool isJumping;
@@ -15,7 +16,8 @@ namespace CoreCharacter
 
         private void FixedUpdate()
         {
-            isGrounded = CharacterUtilities.IsGrounded(rigidbody.transform);
+            if (!movementValues.isCharacterBidimensional)
+                isGrounded = CharacterUtilities.IsGrounded(rb.transform);
 
             if (!isjumpEnabled)
                 return;
@@ -23,17 +25,29 @@ namespace CoreCharacter
             HandleJump();
         }
 
-        public void SetUp(Rigidbody rigidbody, MovementValues movementValues)
+        public void SetUp(Rigidbody rigidbody, Rigidbody2D rigidbody2D, MovementValues movementValues)
         {
-            this.rigidbody = rigidbody;
             this.movementValues = movementValues;
             moveInputValue = Vector2.zero;
             isJumping = false;
 
-            if (movementValues.inputType == InputType.XYAxis)
+            if (movementValues.isCharacterBidimensional)
             {
-                rigidbody.isKinematic = true;
-                isjumpEnabled = false;
+                rb2D = rigidbody2D;
+                if (movementValues.inputType == InputType.XYAxis)
+                {
+                    rb2D.gravityScale = 0;
+                }
+            }
+            else
+            {
+                rb = rigidbody;
+                if (movementValues.inputType == InputType.XYAxis)
+                {
+                    if (rb)
+                        rb.isKinematic = true;
+                    isjumpEnabled = false;
+                }
             }
         }
 
@@ -65,12 +79,16 @@ namespace CoreCharacter
             Vector3 velocity = movementValues.speed * Time.fixedDeltaTime * moveInputValue;
             Vector3 newPosition = transform.position + velocity;
 
-            rigidbody.MovePosition(newPosition);
+            if (movementValues.isCharacterBidimensional && rb2D)
+                rb2D.MovePosition(new Vector2(newPosition.x, newPosition.y));
+            else if (rb)
+                rb.MovePosition(newPosition);
+
         }
 
         private void HandleJump()
         {
-            bool alreadyJumped = isJumping && isGrounded && rigidbody.useGravity;
+            bool alreadyJumped = isJumping && isGrounded && rb.useGravity;
 
             if (canJump)
             {
@@ -81,12 +99,13 @@ namespace CoreCharacter
                 isJumping = false;
             }
 
-            rigidbody.useGravity = !isGrounded;
+            if (rb)
+                rb.useGravity = !isGrounded;
         }
 
         private void Jump()
         {
-            rigidbody.AddForce(Vector3.up * movementValues.jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * movementValues.jumpForce, ForceMode.Impulse);
             isJumping = true;
             canJump = false;
         }
