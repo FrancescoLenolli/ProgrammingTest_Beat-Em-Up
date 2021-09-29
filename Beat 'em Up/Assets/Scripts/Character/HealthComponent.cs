@@ -13,8 +13,6 @@ public class HealthComponent : MonoBehaviour
 
     public void Damage(float damageValue)
     {
-        Debug.Log($"{gameObject.name} health is {value}");
-
         value = Mathf.Clamp(value -= damageValue, 0, value);
 
         if (value <= 0.0f)

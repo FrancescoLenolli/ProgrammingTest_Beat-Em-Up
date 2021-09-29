@@ -9,6 +9,7 @@ public class State_Move : State
         if (!Owner.Target)
             return;
 
+        bool isTargetFacingEnemy = Owner.Target.transform.right.x > 0;
         float range = Owner.AttackComponent.attackRange;
         Vector3 direction = (Owner.Target.transform.position - transform.position);
         Vector3 moveInput = direction.normalized;

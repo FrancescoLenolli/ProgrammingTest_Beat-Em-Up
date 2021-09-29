@@ -2,10 +2,10 @@
 
 public class CharacterAttack : MonoBehaviour
 {
-    public float attackRate = 1.0f;
-    public float attackRange = 1.0f;
-    public float attackArea = .4f;
-    public float attackValue = 1.0f;
+    public float attackRate;
+    public float attackRange;
+    public float attackArea;
+    public float attackValue;
 
     protected CharacterAnimator characterAnimator;
 
@@ -15,7 +15,6 @@ public class CharacterAttack : MonoBehaviour
     private void Update()
     {
         attackTimer = Mathf.Clamp(attackTimer - Time.deltaTime, 0, attackRate);
-
         if (attackTimer <= 0 && canAttack)
         {
             attackTimer = attackRate;

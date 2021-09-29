@@ -24,6 +24,7 @@ public class EnemyControl : CharacterControl
         characterAnimator.SetUp(animator);
         attackComponent.SetUp(characterAnimator);
         health.Value = healthValue;
+        health.OnHealthDepleted += Die;
     }
 
     protected override void GetComponents()
@@ -34,5 +35,10 @@ public class EnemyControl : CharacterControl
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
         attackComponent = CharacterUtilities.TryGetComponent<EnemyAttack>(gameObject);
         target = FindObjectOfType<PlayerControl>();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }

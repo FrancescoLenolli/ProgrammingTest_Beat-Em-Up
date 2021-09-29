@@ -13,6 +13,7 @@ public class PlayerControl : CharacterControl
     private HealthComponent health;
 
     public HealthComponent Health { get => health; set => health = value; }
+    public CharacterAttack Attack { get => characterAttack; set => characterAttack = value; }
 
     protected override void SetUp()
     {
@@ -25,6 +26,7 @@ public class PlayerControl : CharacterControl
         characterInput.ActionJump += characterMovement.SetJump;
         characterInput.ActionMove += characterAnimator.HandleAnimation;
         characterInput.ActionAttack += characterAttack.StartAttack;
+        health.OnHealthDepleted += Die;
     }
 
     protected override void GetComponents()
@@ -35,5 +37,10 @@ public class PlayerControl : CharacterControl
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
         characterAttack = CharacterUtilities.TryGetComponent<PlayerAttack>(gameObject);
+    }
+
+    private void Die()
+    {
+        //gameObject.SetActive(false);
     }
 }

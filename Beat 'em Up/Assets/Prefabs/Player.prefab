@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2458519104036297731}
   - component: {fileID: 2458519104036297732}
   - component: {fileID: 2458519104036297730}
-  - component: {fileID: 2458519104036297733}
+  - component: {fileID: 1889757641}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -144,7 +144,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementValues: {fileID: 11400000, guid: 64dafea80d9292f489eee92c4e2be44a, type: 2}
   characterMovement: {fileID: 0}
---- !u!114 &2458519104036297733
+  healthValue: 2
+--- !u!114 &1889757641
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,9 +154,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2458519104036297759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a828f50fdf4632e46bf06a9b32b2fc07, type: 3}
+  m_Script: {fileID: 11500000, guid: f83df35d3cf595b47b374179bacd612e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 2
-  attackRange: 2
-  attackArea: 0.3
+  attackRate: 1
+  attackRange: 0.2
+  attackArea: 0.4
+  attackValue: 1

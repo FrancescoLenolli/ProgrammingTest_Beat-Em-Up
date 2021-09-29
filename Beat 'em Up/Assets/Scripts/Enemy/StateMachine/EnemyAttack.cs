@@ -13,8 +13,6 @@ public class EnemyAttack : CharacterAttack
                 player.Health?.Damage(attackValue);
         }
 
-        Debug.Log("Enemy Attack");
-
         return hits;
     }
 }
