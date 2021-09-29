@@ -8,9 +8,10 @@ namespace CoreCharacter
         [SerializeField]
         protected MovementValues movementValues = null;
 
-        protected CharacterInput characterInput;
-        protected CharacterMovement characterMovement;
+        [HideInInspector]
+        public CharacterMovement characterMovement = null;
 
+        protected CharacterInput characterInput;
         private Rigidbody rb;
         private Rigidbody2D rb2D;
 
@@ -24,14 +25,10 @@ namespace CoreCharacter
             GetComponents();
 
             characterMovement.SetUp(rb, rb2D, movementValues);
-
-            characterInput.ActionMove += characterMovement.HandleMovement;
-            characterInput.ActionJump += characterMovement.SetJump;
         }
 
         protected virtual void GetComponents()
         {
-            characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
             characterMovement = CharacterUtilities.TryGetComponent<CharacterMovement>(gameObject);
 
             if (movementValues.isCharacterBidimensional)

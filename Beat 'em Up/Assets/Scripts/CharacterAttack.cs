@@ -2,12 +2,9 @@
 
 public class CharacterAttack : MonoBehaviour
 {
-    [SerializeField]
-    protected float attackRate = 1.0f;
-    [SerializeField]
-    protected float attackRange = 1.0f;
-    [SerializeField]
-    protected float attackArea = .4f;
+    public float attackRate = 1.0f;
+    public float attackRange = 1.0f;
+    public float attackArea = .4f;
 
     protected CharacterAnimator characterAnimator;
 
@@ -45,7 +42,7 @@ public class CharacterAttack : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits)
         {
-            Debug.Log(hit.collider.name);
+            //Do Action
         }
     }
 }

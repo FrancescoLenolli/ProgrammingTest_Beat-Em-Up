@@ -9,16 +9,7 @@ public class HealthComponent : MonoBehaviour
     private Action onHealthDepleted;
 
     public Action OnHealthDepleted { get => onHealthDepleted; set => onHealthDepleted = value; }
-
-    public float GetValue()
-    {
-        return value;
-    }
-
-    public void SetValue(float value)
-    {
-        this.value = value;
-    }
+    public float Value { get => value; set => this.value = value; }
 
     public void Damage(float damageValue)
     {
