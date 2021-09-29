@@ -39,4 +39,9 @@ public class CharacterAnimator : MonoBehaviour
     {
         animator.SetTrigger(attackTriggerHash);
     }
+
+    public void IdleAnimation()
+    {
+        animator.SetTrigger(idleTriggerHash);
+    }
 }

@@ -6,8 +6,13 @@ public class State_Attack : State
 {
     public override void UpdateState()
     {
-        Owner.CharacterAttack.StartAttack();
+        bool targetOnLeftSide = Owner.Target.transform.position.x < transform.position.x;
 
-        StateMachine.SwitchState(typeof(State_CheckRange));
+        transform.rotation = targetOnLeftSide ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
+
+        Owner.CharacterAttack.StartAttack();
+        Owner.CharacterAnimator.IdleAnimation();
+
+        StateMachine.SwitchState(typeof(State_Move));
     }
 }

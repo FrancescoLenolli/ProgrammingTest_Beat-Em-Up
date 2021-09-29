@@ -6,10 +6,19 @@ public class State_Move : State
 {
     public override void UpdateState()
     {
-        Vector3 direction = (Owner.Target.transform.position - transform.position).normalized;
-        Owner.characterMovement.HandleMovement(direction);
-        Owner.CharacterAnimator.HandleAnimation(direction);
+        float range = Owner.CharacterAttack.attackRange;
+        Vector3 direction = (Owner.Target.transform.position - transform.position);
+        Vector3 moveInput = direction.normalized;
+        float distance = direction.magnitude;
 
-        StateMachine.SwitchState(typeof(State_CheckRange));
+        if (distance <= range)
+        {
+            StateMachine.SwitchState(typeof(State_Attack));
+        }
+        else
+        {
+            Owner.characterMovement.HandleMovement(moveInput);
+            Owner.CharacterAnimator.HandleAnimation(moveInput);
+        }
     }
 }

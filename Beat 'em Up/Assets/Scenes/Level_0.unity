@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a828f50fdf4632e46bf06a9b32b2fc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 1
+  attackRate: 3
   attackRange: 1
   attackArea: 0.4
 --- !u!114 &1156289432
@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e17024e9320434db3fefa01eec98f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingState: {fileID: 1156289434}
+  startingState: {fileID: 1156289433}
 --- !u!1 &1157914742
 GameObject:
   m_ObjectHideFlags: 0
