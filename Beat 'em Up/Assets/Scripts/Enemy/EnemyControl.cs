@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class EnemyControl : CharacterControl
 {
+    [SerializeField]
+    private float healthValue = 1.0f;
+
     private Animator animator;
     private CharacterAnimator characterAnimator;
-    private CharacterAttack characterAttack;
+    private CharacterAttack attackComponent;
     private PlayerControl target;
     private HealthComponent health;
 
     public HealthComponent Health { get => health; set => health = value; }
-    public PlayerControl Target { get => target; set => target = value; }
-    public CharacterAttack CharacterAttack { get => characterAttack; set => characterAttack = value; }
-    public CharacterAnimator CharacterAnimator { get => characterAnimator; set => characterAnimator = value; }
+    public PlayerControl Target { get => target; }
+    public CharacterAttack AttackComponent { get => attackComponent; }
+    public CharacterAnimator CharacterAnimator { get => characterAnimator; }
 
     protected override void SetUp()
     {
         base.SetUp();
         characterAnimator.SetUp(animator);
-        characterAttack.SetUp(characterAnimator);
+        attackComponent.SetUp(characterAnimator);
+        health.Value = healthValue;
     }
 
     protected override void GetComponents()
     {
         base.GetComponents();
         animator = GetComponent<Animator>();
-        health = GetComponent<HealthComponent>();
+        health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
-        characterAttack = CharacterUtilities.TryGetComponent<CharacterAttack>(gameObject);
+        attackComponent = CharacterUtilities.TryGetComponent<EnemyAttack>(gameObject);
         target = FindObjectOfType<PlayerControl>();
     }
 }

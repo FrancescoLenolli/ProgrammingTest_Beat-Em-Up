@@ -21,6 +21,9 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!targetTransform)
+            return;
+
         float positionX = Mathf.Clamp(targetTransform.position.x, positionXLimit.x, positionXLimit.y);
         float positionY = Mathf.Clamp(targetTransform.position.y, positionYLimit.x, positionYLimit.y);
         transform.position = new Vector3(positionX, positionY, transform.position.z);

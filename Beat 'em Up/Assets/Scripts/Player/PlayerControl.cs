@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerControl : CharacterControl
 {
+    [SerializeField]
+    private float healthValue = 2.0f;
+
     private Animator animator;
     private CharacterAnimator characterAnimator;
     private CharacterAttack characterAttack;
@@ -16,6 +19,7 @@ public class PlayerControl : CharacterControl
         base.SetUp();
         characterAnimator.SetUp(animator);
         characterAttack.SetUp(characterAnimator);
+        health.Value = healthValue;
 
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
@@ -27,9 +31,9 @@ public class PlayerControl : CharacterControl
     {
         base.GetComponents();
         animator = GetComponent<Animator>();
-        health = GetComponent<HealthComponent>();
+        health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
-        characterAttack = CharacterUtilities.TryGetComponent<CharacterAttack>(gameObject);
+        characterAttack = CharacterUtilities.TryGetComponent<PlayerAttack>(gameObject);
     }
 }

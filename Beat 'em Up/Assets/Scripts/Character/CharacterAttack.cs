@@ -5,6 +5,7 @@ public class CharacterAttack : MonoBehaviour
     public float attackRate = 1.0f;
     public float attackRange = 1.0f;
     public float attackArea = .4f;
+    public float attackValue = 1.0f;
 
     protected CharacterAnimator characterAnimator;
 
@@ -34,15 +35,12 @@ public class CharacterAttack : MonoBehaviour
             canAttack = true;
     }
 
-    protected virtual void Attack()
+    protected virtual RaycastHit2D[] Attack()
     {
         characterAnimator.AttackAnimation();
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, attackArea, transform.right, attackRange);
 
-        foreach (RaycastHit2D hit in hits)
-        {
-            //Do Action
-        }
+        return hits;
     }
 }
