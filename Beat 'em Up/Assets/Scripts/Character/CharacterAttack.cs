@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class CharacterAttack : MonoBehaviour
 {
@@ -7,10 +8,11 @@ public class CharacterAttack : MonoBehaviour
     public float attackArea;
     public float attackValue;
 
-    protected CharacterAnimator characterAnimator;
-
     private float attackTimer = .0f;
     private bool canAttack = false;
+    private Action onAttack;
+
+    public Action OnAttack { get => onAttack; set => onAttack = value; }
 
     private void Update()
     {
@@ -23,11 +25,6 @@ public class CharacterAttack : MonoBehaviour
         }
     }
 
-    public void SetUp(CharacterAnimator characterAnimator)
-    {
-        this.characterAnimator = characterAnimator;
-    }
-
     public void StartAttack()
     {
         if (attackTimer <= 0)
@@ -36,8 +33,7 @@ public class CharacterAttack : MonoBehaviour
 
     protected virtual RaycastHit2D[] Attack()
     {
-        characterAnimator.AttackAnimation();
-
+        onAttack?.Invoke();
         RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, attackArea, transform.right, attackRange);
 
         return hits;

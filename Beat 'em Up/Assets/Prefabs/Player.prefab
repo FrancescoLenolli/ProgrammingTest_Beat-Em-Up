@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1779837302}
   - component: {fileID: 1779837303}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BoundCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 2458519104036297732}
   - component: {fileID: 2458519104036297730}
   - component: {fileID: 1889757641}
+  - component: {fileID: 94623406}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -203,6 +204,8 @@ MonoBehaviour:
   movementValues: {fileID: 11400000, guid: 64dafea80d9292f489eee92c4e2be44a, type: 2}
   characterMovement: {fileID: 0}
   healthValue: 2
+  attackNormal: {fileID: 1889757641}
+  attackHeavy: {fileID: 94623406}
 --- !u!114 &1889757641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,3 +222,19 @@ MonoBehaviour:
   attackRange: 0.2
   attackArea: 0.4
   attackValue: 1
+--- !u!114 &94623406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2458519104036297759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f83df35d3cf595b47b374179bacd612e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRate: 2
+  attackRange: 0.5
+  attackArea: 0.4
+  attackValue: 2

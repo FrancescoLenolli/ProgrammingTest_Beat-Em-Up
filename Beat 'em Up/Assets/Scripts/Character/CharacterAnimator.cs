@@ -4,6 +4,7 @@ public class CharacterAnimator : MonoBehaviour
 {
     private Animator animator;
     private int attackTriggerHash;
+    private int attackHeavyTriggerHash;
     private int idleTriggerHash;
     private int walkUpTriggerHash;
     private int walkDownTriggerHash;
@@ -12,6 +13,7 @@ public class CharacterAnimator : MonoBehaviour
     {
         this.animator = animator;
         attackTriggerHash = Animator.StringToHash("Attack");
+        attackHeavyTriggerHash = Animator.StringToHash("Attack_Heavy");
         idleTriggerHash = Animator.StringToHash("Idle");
         walkUpTriggerHash = Animator.StringToHash("Walk_Up");
         walkDownTriggerHash = Animator.StringToHash("Walk_Down");
@@ -38,6 +40,11 @@ public class CharacterAnimator : MonoBehaviour
     public void AttackAnimation()
     {
         animator.SetTrigger(attackTriggerHash);
+    }
+
+    public void AttackHeavyAnimation()
+    {
+        animator.SetTrigger(attackHeavyTriggerHash);
     }
 
     public void IdleAnimation()

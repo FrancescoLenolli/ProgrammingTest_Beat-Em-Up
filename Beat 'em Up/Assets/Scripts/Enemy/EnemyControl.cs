@@ -6,19 +6,22 @@ public class EnemyControl : CharacterControl
 {
     [SerializeField]
     private float healthValue = 1.0f;
+    [SerializeField]
+    private CharacterAttack attackNormal = null;
+    [SerializeField]
+    private CharacterAttack attackHeavy = null;
 
     private Animator animator;
     private CharacterAnimator characterAnimator;
-    private CharacterAttack attackComponent;
     private PlayerControl target;
     private HealthComponent health;
     private LevelManager levelManager;
 
     public HealthComponent Health { get => health; set => health = value; }
     public PlayerControl Target { get => target; }
-    public CharacterAttack AttackComponent { get => attackComponent; }
+    public CharacterAttack AttackNormal { get => attackNormal; }
+    public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
     public CharacterAnimator CharacterAnimator { get => characterAnimator; }
-
 
     public void Init(LevelManager levelManager, PlayerControl target, Vector3 startingPosition)
     {
@@ -33,7 +36,8 @@ public class EnemyControl : CharacterControl
     {
         base.SetUp();
         characterAnimator.SetUp(animator);
-        attackComponent.SetUp(characterAnimator);
+        attackNormal.OnAttack += characterAnimator.AttackAnimation;
+        attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.Value = healthValue;
         health.OnHealthDepleted += Die;
     }
@@ -44,7 +48,6 @@ public class EnemyControl : CharacterControl
         animator = GetComponent<Animator>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
-        attackComponent = CharacterUtilities.TryGetComponent<EnemyAttack>(gameObject);
     }
 
     private void Die()

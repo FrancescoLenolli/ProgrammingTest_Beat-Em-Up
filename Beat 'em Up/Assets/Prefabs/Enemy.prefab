@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5353435600787058366}
   - component: {fileID: 5353435600787058367}
   - component: {fileID: 2320974336520750193}
+  - component: {fileID: 9121211904503374207}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -172,6 +173,8 @@ MonoBehaviour:
   movementValues: {fileID: 11400000, guid: 9f6e81ba439b60b4f9f13ac45792e4f2, type: 2}
   characterMovement: {fileID: 0}
   healthValue: 1
+  attackNormal: {fileID: 2320974336520750193}
+  attackHeavy: {fileID: 9121211904503374207}
 --- !u!114 &5353435600787058364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +236,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4deba2a7756989245ad09437418b886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 3
-  attackRange: 0.4
+  attackRate: 1
+  attackRange: 0.2
   attackArea: 0.4
   attackValue: 1
+--- !u!114 &9121211904503374207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353435600787058357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4deba2a7756989245ad09437418b886b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRate: 2
+  attackRange: 0.4
+  attackArea: 0.4
+  attackValue: 2

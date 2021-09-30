@@ -6,26 +6,32 @@ public class PlayerControl : CharacterControl
 {
     [SerializeField]
     private float healthValue = 2.0f;
+    [SerializeField]
+    private CharacterAttack attackNormal = null;
+    [SerializeField]
+    private CharacterAttack attackHeavy = null;
 
     private Animator animator;
     private CharacterAnimator characterAnimator;
-    private CharacterAttack characterAttack;
     private HealthComponent health;
 
     public HealthComponent Health { get => health; set => health = value; }
-    public CharacterAttack Attack { get => characterAttack; set => characterAttack = value; }
+    public CharacterAttack AttackNormal { get => attackNormal; set => attackNormal = value; }
+    public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
 
     protected override void SetUp()
     {
         base.SetUp();
         characterAnimator.SetUp(animator);
-        characterAttack.SetUp(characterAnimator);
         health.Value = healthValue;
 
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
         characterInput.ActionMove += characterAnimator.HandleAnimation;
-        characterInput.ActionAttack += characterAttack.StartAttack;
+        characterInput.ActionAttack1 += attackNormal.StartAttack;
+        characterInput.ActionAttack2 += attackHeavy.StartAttack;
+        attackNormal.OnAttack += characterAnimator.AttackAnimation;
+        attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.OnHealthDepleted += Die;
     }
 
@@ -36,7 +42,6 @@ public class PlayerControl : CharacterControl
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
-        characterAttack = CharacterUtilities.TryGetComponent<PlayerAttack>(gameObject);
     }
 
     private void Die()
