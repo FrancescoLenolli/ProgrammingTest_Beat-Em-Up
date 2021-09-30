@@ -33,13 +33,23 @@ public class CameraController : MonoBehaviour
         isCameraLocked = lockCamera;
     }
 
-    // The game goes from left to right, I don't need to know the left limit.
+    public bool IsCameraLocked()
+    {
+        return isCameraLocked;
+    }
+
     public Vector3 GetRightLimit()
     {
-        // Multiply a bit more than 2 to get a position outside the camera viewport.
-        float cameraHorizontalSize = mainCamera.orthographicSize * 2.5f;
+        float cameraHorizontalSize = mainCamera.orthographicSize * 2;
         return new Vector3(transform.position.x + cameraHorizontalSize, transform.position.y, 0);
     }
+
+    public Vector3 GetLeftLimit()
+    {
+        float cameraHorizontalSize = mainCamera.orthographicSize * 2;
+        return new Vector3(transform.position.x - cameraHorizontalSize, transform.position.y, 0);
+    }
+
 
     private void SetCameraLimits(Vector3 lowLimit, Vector3 highLimit)
     {

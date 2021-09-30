@@ -36,18 +36,7 @@ public class LevelManager : MonoBehaviour
         if (currentIndex == wavesPosition.Count || !(player.transform.position.x >= wavesPosition[currentIndex].localPosition.x) || !canStartWave)
             return;
 
-        canStartWave = false;
-        cameraController.LockCamera(true);
-        Vector3 cameraRightLimit = cameraController.GetRightLimit();
-
-        for (int i = 0; i < enemyCount; ++i)
-        {
-            float positionY = cameraController.transform.position.y + Random.Range(-.3f, .3f);
-            Vector3 startingPosition = new Vector3(cameraRightLimit.x, positionY, 0);
-            EnemyControl newEnemy = Instantiate(prefabEnemy);
-            newEnemy.Init(this, player, startingPosition);
-            ++activeEnemiesCount;
-        }
+        StartWave();
     }
 
     public void EnemyDied()
@@ -58,6 +47,23 @@ public class LevelManager : MonoBehaviour
             currentIndex = Mathf.Clamp(++currentIndex, 0, wavesPosition.Count);
             cameraController.LockCamera(false);
             canStartWave = true;
+        }
+    }
+
+    private void StartWave()
+    {
+        canStartWave = false;
+        cameraController.LockCamera(true);
+        Vector3 cameraRightLimit = cameraController.GetRightLimit();
+
+        for (int i = 0; i < enemyCount; ++i)
+        {
+            float positionY = cameraController.transform.position.y + Random.Range(-.3f, .3f);
+            // Add an offset to the right limit to spawn enemies outside the camera viewport.
+            Vector3 startingPosition = new Vector3(cameraRightLimit.x + .5f, positionY, 0);
+            EnemyControl newEnemy = Instantiate(prefabEnemy);
+            newEnemy.Init(this, player, startingPosition);
+            ++activeEnemiesCount;
         }
     }
 }
