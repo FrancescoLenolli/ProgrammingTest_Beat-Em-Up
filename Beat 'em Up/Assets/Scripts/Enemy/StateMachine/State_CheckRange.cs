@@ -6,7 +6,7 @@ public class State_CheckRange : State
 {
     public override void UpdateState()
     {
-        float range = Owner.AttackNormal.attackRange;
+        float range = Owner.AttackNormal.attackValues.range;
         float distance = (Owner.Target.transform.position - transform.position).magnitude;
 
         if (distance <= range)

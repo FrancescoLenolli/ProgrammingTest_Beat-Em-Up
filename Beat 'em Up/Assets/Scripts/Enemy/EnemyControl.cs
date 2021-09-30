@@ -39,6 +39,7 @@ public class EnemyControl : CharacterControl
         attackNormal.OnAttack += characterAnimator.AttackAnimation;
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.Value = healthValue;
+        health.OnDamageReceived += characterAnimator.HitAnimation;
         health.OnHealthDepleted += Die;
     }
 

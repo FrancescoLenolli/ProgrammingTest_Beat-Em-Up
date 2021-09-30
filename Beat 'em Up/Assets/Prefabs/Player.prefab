@@ -218,10 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83df35d3cf595b47b374179bacd612e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 1
-  attackRange: 0.2
-  attackArea: 0.4
-  attackValue: 1
+  attackValues: {fileID: 11400000, guid: 03d042d7e97b57f48bd1f47853c6e511, type: 2}
 --- !u!114 &94623406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,7 +231,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f83df35d3cf595b47b374179bacd612e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 2
-  attackRange: 0.5
-  attackArea: 0.4
-  attackValue: 2
+  attackValues: {fileID: 11400000, guid: cd5baf6848f52e14c81a866d0c83b683, type: 2}

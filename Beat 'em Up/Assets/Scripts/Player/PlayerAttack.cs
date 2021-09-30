@@ -10,7 +10,7 @@ public class PlayerAttack : CharacterAttack
         {
             EnemyControl enemy = hit.collider.GetComponent<EnemyControl>();
             if (enemy)
-                enemy.Health?.Damage(attackValue);
+                enemy.Health?.Damage(attackValues.damage);
         }
 
         return hits;

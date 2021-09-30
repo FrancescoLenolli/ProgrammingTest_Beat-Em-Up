@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementValues: {fileID: 11400000, guid: 9f6e81ba439b60b4f9f13ac45792e4f2, type: 2}
   characterMovement: {fileID: 0}
-  healthValue: 1
+  healthValue: 20
   attackNormal: {fileID: 2320974336520750193}
   attackHeavy: {fileID: 9121211904503374207}
 --- !u!114 &5353435600787058364
@@ -236,10 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4deba2a7756989245ad09437418b886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 1
-  attackRange: 0.2
-  attackArea: 0.4
-  attackValue: 1
+  attackValues: {fileID: 11400000, guid: 03d042d7e97b57f48bd1f47853c6e511, type: 2}
 --- !u!114 &9121211904503374207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +249,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4deba2a7756989245ad09437418b886b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRate: 2
-  attackRange: 0.4
-  attackArea: 0.4
-  attackValue: 2
+  attackValues: {fileID: 11400000, guid: cd5baf6848f52e14c81a866d0c83b683, type: 2}

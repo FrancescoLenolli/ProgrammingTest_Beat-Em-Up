@@ -10,7 +10,7 @@ public abstract class State : MonoBehaviour
     public EnemyControl Owner { get => owner; }
     public StateMachine StateMachine { get => stateMachine; }
 
-    public void SetUp(EnemyControl owner, StateMachine stateMachine)
+    public virtual void SetUp(EnemyControl owner, StateMachine stateMachine)
     {
         this.owner = owner;
         this.stateMachine = stateMachine;
