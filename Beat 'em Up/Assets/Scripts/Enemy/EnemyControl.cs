@@ -12,11 +12,22 @@ public class EnemyControl : CharacterControl
     private CharacterAttack attackComponent;
     private PlayerControl target;
     private HealthComponent health;
+    private LevelManager levelManager;
 
     public HealthComponent Health { get => health; set => health = value; }
     public PlayerControl Target { get => target; }
     public CharacterAttack AttackComponent { get => attackComponent; }
     public CharacterAnimator CharacterAnimator { get => characterAnimator; }
+
+
+    public void Init(LevelManager levelManager, PlayerControl target, Vector3 startingPosition)
+    {
+        this.levelManager = levelManager;
+        this.target = target;
+        transform.position = startingPosition;
+        SetUp();
+        health.OnHealthDepleted += levelManager.EnemyDied;
+    }
 
     protected override void SetUp()
     {
@@ -34,7 +45,6 @@ public class EnemyControl : CharacterControl
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
         attackComponent = CharacterUtilities.TryGetComponent<EnemyAttack>(gameObject);
-        target = FindObjectOfType<PlayerControl>();
     }
 
     private void Die()

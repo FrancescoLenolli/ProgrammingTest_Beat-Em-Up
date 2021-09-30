@@ -5,28 +5,40 @@ using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform lowerLimit;
-    public Transform upperLimit;
-    public Transform targetTransform;
-
     private Camera mainCamera;
+    private Transform targetTransform;
     private Vector2 positionXLimit;
     private Vector2 positionYLimit;
-
-    private void Awake()
-    {
-        mainCamera = GetComponent<Camera>();
-        SetCameraLimits(lowerLimit.position, upperLimit.position);
-    }
+    private bool isCameraLocked;
 
     private void LateUpdate()
     {
-        if (!targetTransform)
+        if (!targetTransform || isCameraLocked)
             return;
 
         float positionX = Mathf.Clamp(targetTransform.position.x, positionXLimit.x, positionXLimit.y);
         float positionY = Mathf.Clamp(targetTransform.position.y, positionYLimit.x, positionYLimit.y);
         transform.position = new Vector3(positionX, positionY, transform.position.z);
+    }
+
+    public void SetUp(Transform lowerLimit, Transform upperLimit, Transform targetTransform)
+    {
+        this.targetTransform = targetTransform;
+        mainCamera = GetComponent<Camera>();
+        SetCameraLimits(lowerLimit.position, upperLimit.position);
+    }
+
+    public void LockCamera(bool lockCamera)
+    {
+        isCameraLocked = lockCamera;
+    }
+
+    // The game goes from left to right, I don't need to know the left limit.
+    public Vector3 GetRightLimit()
+    {
+        // Multiply a bit more than 2 to get a position outside the camera viewport.
+        float cameraHorizontalSize = mainCamera.orthographicSize * 2.5f;
+        return new Vector3(transform.position.x + cameraHorizontalSize, transform.position.y, 0);
     }
 
     private void SetCameraLimits(Vector3 lowLimit, Vector3 highLimit)

@@ -37,6 +37,7 @@ namespace CoreCharacter
                 if (movementValues.inputType == InputType.XYAxis)
                 {
                     rb2D.gravityScale = 0;
+                    rb2D.freezeRotation = true;
                 }
             }
             else
