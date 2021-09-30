@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class State_Move : State
 {
+    private float randomOffset;
+
+    private void Awake()
+    {
+        randomOffset = Random.Range(-.2f, .2f);
+    }
+
     public override void UpdateState()
     {
         if (!Owner.Target)
@@ -12,6 +19,7 @@ public class State_Move : State
         bool isTargetFacingEnemy = Owner.Target.transform.right.x > 0;
         float range = Owner.AttackComponent.attackRange;
         Vector3 direction = (Owner.Target.transform.position - transform.position);
+        direction = new Vector3(direction.x, direction.y + randomOffset, direction.z);
         Vector3 moveInput = direction.normalized;
         float distance = direction.magnitude;
 
