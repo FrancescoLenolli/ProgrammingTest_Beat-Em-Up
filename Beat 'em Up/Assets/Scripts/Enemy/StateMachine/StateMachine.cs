@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +19,8 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        currentState?.UpdateState();
+        if (owner && owner.Target && owner.Target.isAlive)
+            currentState?.UpdateState();
     }
 
     public void SwitchState(Type newStateType)
