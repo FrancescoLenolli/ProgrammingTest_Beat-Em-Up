@@ -5,6 +5,9 @@ namespace CoreCharacter
 {
     public class CharacterMovement : MonoBehaviour
     {
+        [HideInInspector]
+        public bool canMove = true;
+
         private MovementValues movementValues;
         private Rigidbody rb;
         private Rigidbody2D rb2D;
@@ -54,6 +57,9 @@ namespace CoreCharacter
 
         public void HandleMovement(Vector3 movementValue)
         {
+            if (!canMove)
+                return;
+
             moveInputValue = ModifyInput(movementValue);
             HandlePosition(moveInputValue);
         }

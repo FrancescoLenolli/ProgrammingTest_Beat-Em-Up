@@ -32,6 +32,8 @@ public class PlayerControl : CharacterControl
         characterInput.ActionAttack2 += attackHeavy.StartAttack;
         attackNormal.OnAttack += characterAnimator.AttackAnimation;
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
+        health.OnDamageReceived += characterAnimator.HitAnimation;
+        health.OnDamageReceived += BounceBack;
         health.OnHealthDepleted += Die;
     }
 

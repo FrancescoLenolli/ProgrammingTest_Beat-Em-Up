@@ -1,9 +1,12 @@
 ﻿using CoreCharacter;
 using CoreCharacter.Utilities;
+using System.Collections;
 using UnityEngine;
 
 public class EnemyControl : CharacterControl
 {
+    [SerializeField]
+    private bool debug = false;
     [SerializeField]
     private float healthValue = 1.0f;
     [SerializeField]
@@ -15,7 +18,6 @@ public class EnemyControl : CharacterControl
     private CharacterAnimator characterAnimator;
     private PlayerControl target;
     private HealthComponent health;
-    private LevelManager levelManager;
 
     public HealthComponent Health { get => health; set => health = value; }
     public PlayerControl Target { get => target; }
@@ -23,9 +25,17 @@ public class EnemyControl : CharacterControl
     public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
     public CharacterAnimator CharacterAnimator { get => characterAnimator; }
 
+    private void Awake()
+    {
+        if (debug)
+        {
+            target = FindObjectOfType<PlayerControl>();
+            SetUp();
+        }
+    }
+
     public void Init(LevelManager levelManager, PlayerControl target, Vector3 startingPosition)
     {
-        this.levelManager = levelManager;
         this.target = target;
         transform.position = startingPosition;
         SetUp();
@@ -40,6 +50,7 @@ public class EnemyControl : CharacterControl
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.Value = healthValue;
         health.OnDamageReceived += characterAnimator.HitAnimation;
+        health.OnDamageReceived += BounceBack;
         health.OnHealthDepleted += Die;
     }
 

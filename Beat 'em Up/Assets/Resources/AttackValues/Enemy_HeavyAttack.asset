@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5376d3f292bd00f44a9f1d53db623226, type: 3}
-  m_Name: PlayerMovementValues
+  m_Script: {fileID: 11500000, guid: 6fbbdafe04782694f92387a0577c5fde, type: 3}
+  m_Name: Enemy_HeavyAttack
   m_EditorClassIdentifier: 
-  inputType: 1
-  isCharacterBidimensional: 1
-  speed: 0.7
-  jumpForce: 1
+  rate: 3
+  range: 0.2
+  area: 0.4
+  damage: 3

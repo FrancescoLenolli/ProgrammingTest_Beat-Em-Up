@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreCharacter;
+using UnityEngine;
 
 public class EnemyAttack : CharacterAttack
 {
@@ -10,7 +11,10 @@ public class EnemyAttack : CharacterAttack
         {
             PlayerControl player = hit.collider.GetComponent<PlayerControl>();
             if (player)
+            {
+                player.otherCharacterPositionX = transform.position.x;
                 player.Health?.Damage(attackValues.damage);
+            }
         }
 
         return hits;

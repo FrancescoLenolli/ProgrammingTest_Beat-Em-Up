@@ -23,8 +23,8 @@ public class State_Attack : State
             Owner.AttackHeavy.StartAttack();
             normalAttack = true;
         }
-        Owner.CharacterAnimator.IdleAnimation();
 
+        Owner.CharacterAnimator.IdleAnimation();
         StateMachine.SwitchState(typeof(State_Move));
     }
 }

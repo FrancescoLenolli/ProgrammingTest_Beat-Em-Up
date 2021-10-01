@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
@@ -16,8 +14,10 @@ public class HealthComponent : MonoBehaviour
     public void Damage(float damageValue)
     {
         value = Mathf.Clamp(value -= damageValue, 0, value);
-        onDamageReceived?.Invoke();
+
         if (value <= 0.0f)
             onHealthDepleted?.Invoke();
+        else
+            onDamageReceived?.Invoke();
     }
 }

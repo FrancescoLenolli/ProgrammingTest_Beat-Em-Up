@@ -18,7 +18,7 @@ public class CharacterAnimator : MonoBehaviour
         idleTriggerHash = Animator.StringToHash("Idle");
         walkUpTriggerHash = Animator.StringToHash("Walk_Up");
         walkDownTriggerHash = Animator.StringToHash("Walk_Down");
-        walkDownTriggerHash = Animator.StringToHash("Hit");
+        hitTriggerHash = Animator.StringToHash("Hit");
     }
 
     public void HandleAnimation(Vector3 input)

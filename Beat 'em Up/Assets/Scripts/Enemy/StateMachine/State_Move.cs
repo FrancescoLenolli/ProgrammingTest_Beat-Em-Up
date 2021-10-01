@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CoreCharacter.Utilities;
+using UnityEngine;
 
 public class State_Move : State
 {
@@ -17,12 +18,9 @@ public class State_Move : State
 
         float range = Owner.AttackNormal.attackValues.range;
         Vector3 direction = (Owner.Target.transform.position - transform.position);
-        direction = new Vector3(direction.x, direction.y + randomOffset, direction.z);
+        Vector3 moveInput = new Vector3(direction.x, direction.y + randomOffset, direction.z).normalized;
 
-        Vector3 moveInput = direction.normalized;
-        float distance = direction.magnitude;
-
-        if (distance <= range)
+        if (CharacterUtilities.IsTargetInRange(transform, Owner.Target.transform, range))
         {
             StateMachine.SwitchState(typeof(State_Attack));
         }
