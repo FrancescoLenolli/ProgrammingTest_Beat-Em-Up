@@ -3,6 +3,7 @@
 public class CharacterAnimator : MonoBehaviour
 {
     private Animator animator;
+    private bool canAnimate;
     private int attackTriggerHash;
     private int attackHeavyTriggerHash;
     private int idleTriggerHash;
@@ -10,9 +11,13 @@ public class CharacterAnimator : MonoBehaviour
     private int walkDownTriggerHash;
     private int hitTriggerHash;
     private int deathTriggerHash;
+    private int deathToIdleTriggerHash;
+
+    public bool CanAnimate { get => canAnimate; set => canAnimate = value; }
 
     public void SetUp(Animator animator)
     {
+        canAnimate = true;
         this.animator = animator;
         attackTriggerHash = Animator.StringToHash("Attack");
         attackHeavyTriggerHash = Animator.StringToHash("Attack_Heavy");
@@ -21,11 +26,12 @@ public class CharacterAnimator : MonoBehaviour
         walkDownTriggerHash = Animator.StringToHash("Walk_Down");
         hitTriggerHash = Animator.StringToHash("Hit");
         deathTriggerHash = Animator.StringToHash("Death");
+        deathToIdleTriggerHash = Animator.StringToHash("Death_To_Idle");
     }
 
     public void HandleAnimation(Vector3 input)
     {
-        if (!animator)
+        if (!animator || !canAnimate)
             return;
 
         if (input != Vector3.zero)
@@ -64,5 +70,9 @@ public class CharacterAnimator : MonoBehaviour
     public void DeathAnimation()
     {
         animator.SetTrigger(deathTriggerHash);
+    }
+    public void DeathToIdleAnimation()
+    {
+        animator.SetTrigger(deathToIdleTriggerHash);
     }
 }

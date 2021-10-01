@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -14,6 +15,12 @@ public class LevelManager : MonoBehaviour
     [Tooltip("Enemies spawn each x seconds.")]
     [SerializeField]
     private float spawnDelay = .2f;
+    [Tooltip("Set to TRUE to wait on player input to restart level.\nIf set to FALSE, use the 'Restart Delay' property to set the restart wait time.")]
+    [SerializeField]
+    private bool restartOnPlayerInput = false;
+    [Min(0)]
+    [SerializeField]
+    private float restartDelay = .5f;
     [SerializeField]
     private CameraController cameraController = null;
     [SerializeField]
@@ -24,20 +31,25 @@ public class LevelManager : MonoBehaviour
     private List<Transform> wavesPosition = new List<Transform>();
 
     private PlayerControl player;
+    private Vector3 startingPosition;
     private int currentIndex;
     private int activeEnemiesCount;
     private bool canStartWave;
 
     private void Awake()
     {
-        canStartWave = true;
         player = FindObjectOfType<PlayerControl>();
+        startingPosition = player.transform.position;
+        canStartWave = true;
         currentIndex = 0;
         cameraController.SetUp(lowerLimit, upperLimit, player.transform);
     }
 
     private void Update()
     {
+        if (!player.IsAlive)
+            StartCoroutine(ResetLevelRoutine());
+
         if (currentIndex == wavesPosition.Count || !(player.transform.position.x >= wavesPosition[currentIndex].localPosition.x) || !canStartWave)
             return;
 
@@ -47,7 +59,7 @@ public class LevelManager : MonoBehaviour
     public void EnemyDied()
     {
         activeEnemiesCount = Mathf.Clamp(--activeEnemiesCount, 0, activeEnemiesCount);
-        if(activeEnemiesCount == 0)
+        if (activeEnemiesCount == 0)
         {
             currentIndex = Mathf.Clamp(++currentIndex, 0, wavesPosition.Count);
             cameraController.LockCamera(false);
@@ -85,6 +97,26 @@ public class LevelManager : MonoBehaviour
             SpawnEnemy(cameraLeftLimitX, cameraRightLimitX);
             yield return new WaitForSeconds(spawnDelay);
         }
+
+        yield return null;
+    }
+
+    private IEnumerator ResetLevelRoutine()
+    {
+        canStartWave = false;
+
+        if (restartOnPlayerInput)
+            while (!Input.GetKeyDown(KeyCode.R))
+                yield return null;
+        else
+            yield return new WaitForSeconds(restartDelay);
+
+        FindObjectsOfType<EnemyControl>().ToList().ForEach(enemy => Destroy(enemy.gameObject));
+        player.RestartLevel(startingPosition);
+        currentIndex = 0;
+        activeEnemiesCount = 0;
+        canStartWave = true;
+        cameraController.LockCamera(false);
 
         yield return null;
     }

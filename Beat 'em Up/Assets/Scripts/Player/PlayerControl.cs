@@ -11,6 +11,7 @@ public class PlayerControl : CharacterControl
     [SerializeField]
     private CharacterAttack attackHeavy = null;
 
+    private bool isAlive = true;
     private Animator animator;
     private CharacterAnimator characterAnimator;
     private HealthComponent health;
@@ -18,12 +19,23 @@ public class PlayerControl : CharacterControl
     public HealthComponent Health { get => health; set => health = value; }
     public CharacterAttack AttackNormal { get => attackNormal; set => attackNormal = value; }
     public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
+    public bool IsAlive { get => isAlive; set => isAlive = value; }
+
+    public void RestartLevel(Vector3 position)
+    {
+        transform.position = position;
+        isAlive = true;
+        health.Revive();
+        characterMovement.canMove = true;
+        characterAnimator.CanAnimate = true;
+        characterAnimator.DeathToIdleAnimation();
+    }
 
     protected override void SetUp()
     {
         base.SetUp();
         characterAnimator.SetUp(animator);
-        health.Value = healthValue;
+        health.Set(healthValue);
 
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
@@ -48,6 +60,9 @@ public class PlayerControl : CharacterControl
 
     private void Die()
     {
-        //gameObject.SetActive(false);
+        isAlive = false;
+        characterMovement.canMove = false;
+        characterAnimator.CanAnimate = false;
+        characterAnimator.DeathAnimation();
     }
 }

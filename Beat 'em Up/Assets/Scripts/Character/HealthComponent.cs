@@ -3,14 +3,27 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
+    private float totalValue;
     private float value;
     private bool healthDepleted = false;
     private Action onHealthDepleted;
     private Action onDamageReceived;
 
-    public float Value { get => value; set => this.value = value; }
     public Action OnHealthDepleted { get => onHealthDepleted; set => onHealthDepleted = value; }
     public Action OnDamageReceived { get => onDamageReceived; set => onDamageReceived = value; }
+
+
+    public void Set(float healthValue)
+    {
+        totalValue = healthValue;
+        value = totalValue;
+    }
+
+    public void Revive()
+    {
+        healthDepleted = false;
+        value = totalValue;
+    }
 
     public void Damage(float damageValue)
     {

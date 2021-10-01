@@ -49,7 +49,7 @@ public class EnemyControl : CharacterControl
         characterAnimator.SetUp(animator);
         attackNormal.OnAttack += characterAnimator.AttackAnimation;
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
-        health.Value = healthValue;
+        health.Set(healthValue);
         health.OnDamageReceived += characterAnimator.HitAnimation;
         health.OnDamageReceived += BounceBack;
         health.OnHealthDepleted += Die;

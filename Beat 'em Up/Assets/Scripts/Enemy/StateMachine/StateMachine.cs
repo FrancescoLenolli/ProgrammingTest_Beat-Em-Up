@@ -19,8 +19,7 @@ public class StateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (owner && owner.Target && owner.Target.isAlive)
-            currentState?.UpdateState();
+        currentState?.UpdateState();
     }
 
     public void SwitchState(Type newStateType)
