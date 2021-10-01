@@ -12,7 +12,7 @@ public class EnemyAttack : CharacterAttack
             PlayerControl player = hit.collider.GetComponent<PlayerControl>();
             if (player)
             {
-                player.otherCharacterPositionX = transform.position.x;
+                player.otherCharacterDirection = transform.right;
                 player.Health?.Damage(attackValues.damage);
             }
         }

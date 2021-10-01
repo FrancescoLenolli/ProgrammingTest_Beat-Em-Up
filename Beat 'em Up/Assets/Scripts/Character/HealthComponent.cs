@@ -4,6 +4,7 @@ using UnityEngine;
 public class HealthComponent : MonoBehaviour
 {
     private float value;
+    private bool healthDepleted = false;
     private Action onHealthDepleted;
     private Action onDamageReceived;
 
@@ -15,9 +16,17 @@ public class HealthComponent : MonoBehaviour
     {
         value = Mathf.Clamp(value -= damageValue, 0, value);
 
-        if (value <= 0.0f)
-            onHealthDepleted?.Invoke();
-        else
-            onDamageReceived?.Invoke();
+        if (!healthDepleted)
+        {
+            if (value <= 0.0f)
+            {
+                onHealthDepleted?.Invoke();
+                healthDepleted = true;
+            }
+            else
+            {
+                onDamageReceived?.Invoke();
+            }
+        }
     }
 }

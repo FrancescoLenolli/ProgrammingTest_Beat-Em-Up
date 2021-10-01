@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -6,9 +7,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private EnemyControl prefabEnemy = null;
     [Min(1)]
-    [Tooltip("How many enemies get spawned in each wave")]
+    [Tooltip("How many enemies get spawned in each wave.")]
     [SerializeField]
     private int enemyCount = 1;
+    [Min(0)]
+    [Tooltip("Enemies spawn each x seconds.")]
+    [SerializeField]
+    private float spawnDelay = .2f;
     [SerializeField]
     private CameraController cameraController = null;
     [SerializeField]
@@ -52,18 +57,36 @@ public class LevelManager : MonoBehaviour
 
     private void StartWave()
     {
+        StartCoroutine(StartWaveRoutine());
+    }
+
+    private void SpawnEnemy(float leftPosition, float righPosition)
+    {
+        float positionY = cameraController.transform.position.y + Random.Range(-.2f, .2f);
+        // Randomly decide if enemies should spawn on the left or right of the camera viewport
+        float cameraLimit = Random.Range(0, 2) == 0 ? righPosition : leftPosition;
+        // Add an offset to the right limit to spawn enemies outside the camera viewport.
+        Vector3 startingPosition = new Vector3(cameraLimit + .5f, positionY, 0);
+
+        EnemyControl newEnemy = Instantiate(prefabEnemy);
+        newEnemy.Init(this, player, startingPosition);
+        ++activeEnemiesCount;
+    }
+
+    private IEnumerator StartWaveRoutine()
+    {
         canStartWave = false;
         cameraController.LockCamera(true);
-        Vector3 cameraRightLimit = cameraController.GetRightLimit();
+        float cameraRightLimitX = cameraController.GetRightLimit().x;
+        float cameraLeftLimitX = cameraController.GetLeftLimit().x;
 
         for (int i = 0; i < enemyCount; ++i)
         {
-            float positionY = cameraController.transform.position.y + Random.Range(-.3f, .3f);
-            // Add an offset to the right limit to spawn enemies outside the camera viewport.
-            Vector3 startingPosition = new Vector3(cameraRightLimit.x + .5f, positionY, 0);
-            EnemyControl newEnemy = Instantiate(prefabEnemy);
-            newEnemy.Init(this, player, startingPosition);
-            ++activeEnemiesCount;
+            SpawnEnemy(cameraLeftLimitX, cameraRightLimitX);
+            yield return new WaitForSeconds(spawnDelay);
         }
+
+        yield return null;
     }
+
 }

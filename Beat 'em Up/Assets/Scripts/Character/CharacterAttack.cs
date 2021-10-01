@@ -4,6 +4,7 @@ using UnityEngine;
 public class CharacterAttack : MonoBehaviour
 {
     public AttackValues attackValues;
+
     private float attackTimer = .0f;
     private bool canAttack = false;
     private Action onAttack;
@@ -30,7 +31,8 @@ public class CharacterAttack : MonoBehaviour
     protected virtual RaycastHit2D[] Attack()
     {
         onAttack?.Invoke();
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(transform.position, attackValues.area, transform.right, attackValues.range);
+        Vector3 origin = transform.position;
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(origin, attackValues.range / 2, transform.right, attackValues.range / 2);
 
         return hits;
     }

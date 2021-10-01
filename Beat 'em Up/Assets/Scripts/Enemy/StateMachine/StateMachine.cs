@@ -44,4 +44,9 @@ public class StateMachine : MonoBehaviour
 
         currentState = startingState;
     }
+
+    public void Stop()
+    {
+        currentState = null;
+    }
 }

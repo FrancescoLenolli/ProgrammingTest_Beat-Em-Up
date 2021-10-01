@@ -12,7 +12,7 @@ namespace CoreCharacter
         [HideInInspector]
         public CharacterMovement characterMovement = null;
         [HideInInspector]
-        public float otherCharacterPositionX = 0.0f;
+        public Vector3 otherCharacterDirection;
 
         protected CharacterInput characterInput;
         private Rigidbody rb;
@@ -51,12 +51,11 @@ namespace CoreCharacter
             float timer = time;
             float speed = 1.0f;
             characterMovement.canMove = false;
-            Vector3 moveInput = transform.position.x > otherCharacterPositionX ? Vector3.right : Vector3.left;
 
             while (timer > 0.0f)
             {
                 timer -= Time.deltaTime;
-                transform.position += speed * Time.deltaTime * moveInput;
+                transform.position += speed * Time.deltaTime * otherCharacterDirection;
                 yield return null;
             }
 

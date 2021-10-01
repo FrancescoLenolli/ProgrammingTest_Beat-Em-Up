@@ -18,6 +18,7 @@ public class EnemyControl : CharacterControl
     private CharacterAnimator characterAnimator;
     private PlayerControl target;
     private HealthComponent health;
+    private StateMachine stateMachine;
 
     public HealthComponent Health { get => health; set => health = value; }
     public PlayerControl Target { get => target; }
@@ -60,10 +61,12 @@ public class EnemyControl : CharacterControl
         animator = GetComponent<Animator>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
+        stateMachine = GetComponent<StateMachine>();
     }
 
     private void Die()
     {
-        Destroy(gameObject);
+        stateMachine.Stop();
+        characterAnimator.DeathAnimation();
     }
 }
