@@ -6,6 +6,9 @@ public class PlayerControl : CharacterControl
 {
     [SerializeField]
     private float healthValue = 2.0f;
+    [Tooltip("Amount of time the Player staggers back when hit.")]
+    [SerializeField]
+    private float staggerTime = .5f;
     [SerializeField]
     private CharacterAttack attackNormal = null;
     [SerializeField]
@@ -41,12 +44,12 @@ public class PlayerControl : CharacterControl
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
         characterInput.ActionMove += characterAnimator.HandleAnimation;
-        characterInput.ActionAttack1 += attackNormal.StartAttack;
-        characterInput.ActionAttack2 += attackHeavy.StartAttack;
+        characterInput.Action1 += attackNormal.StartAttack;
+        characterInput.Action2 += attackHeavy.StartAttack;
         attackNormal.OnAttack += characterAnimator.AttackAnimation;
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.OnDamageReceived += characterAnimator.HitAnimation;
-        health.OnDamageReceived += BounceBack;
+        health.OnDamageReceived += Stagger;
         health.OnHealthDepleted += Die;
     }
 
@@ -57,6 +60,11 @@ public class PlayerControl : CharacterControl
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
+    }
+
+    private void Stagger()
+    {
+        BounceBack(staggerTime);
     }
 
     private void Die()

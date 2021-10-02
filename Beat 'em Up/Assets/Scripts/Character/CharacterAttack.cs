@@ -16,10 +16,15 @@ public class CharacterAttack : MonoBehaviour
         attackTimer = Mathf.Clamp(attackTimer - Time.deltaTime, 0, attackValues.rate);
         if (attackTimer <= 0 && canAttack)
         {
-            attackTimer = attackValues.rate;
+            ResetTimer();
             canAttack = false;
             Attack();
         }
+    }
+
+    public void ResetTimer()
+    {
+        attackTimer = attackValues.rate;
     }
 
     public void StartAttack()

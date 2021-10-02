@@ -8,19 +8,19 @@ namespace CoreCharacter
         private Vector2 moveInput = Vector2.zero;
         private Vector2 rotateInput = Vector2.zero;
         private bool jumpCheck = true;
-        private bool attack1Check = true;
-        private bool attack2Check = true;
+        private bool action1Check = true;
+        private bool action2Check = true;
         private Action<Vector3> actionMove;
         private Action<Vector2> actionRotate;
         private Action actionJump;
-        private Action actionAttack1;
-        private Action actionAttack2;
+        private Action action1;
+        private Action action2;
 
         public Action<Vector3> ActionMove { get => actionMove; set => actionMove = value; }
         public Action<Vector2> ActionRotate { get => actionRotate; set => actionRotate = value; }
         public Action ActionJump { get => actionJump; set => actionJump = value; }
-        public Action ActionAttack1 { get => actionAttack1; set => actionAttack1 = value; }
-        public Action ActionAttack2 { get => actionAttack2; set => actionAttack2 = value; }
+        public Action Action1 { get => action1; set => action1 = value; }
+        public Action Action2 { get => action2; set => action2 = value; }
 
         private void Update()
         {
@@ -33,39 +33,39 @@ namespace CoreCharacter
 
         private void HandleAttack1()
         {
-            if (Input.GetAxis("Fire3") == 1 && attack1Check)
+            if (Input.GetAxis("Fire3") == 1 && action1Check)
             {
-                ActionAttack1?.Invoke();
-                attack1Check = false;
+                Action1?.Invoke();
+                action1Check = false;
             }
-            if (Input.GetAxis("Fire3") == 0 && !attack1Check)
+            if (Input.GetAxis("Fire3") == 0 && !action1Check)
             {
-                attack1Check = true;
+                action1Check = true;
             }
 
             if(Input.GetKeyDown(KeyCode.K))
             {
-                ActionAttack1?.Invoke();
-                attack1Check = false;
+                Action1?.Invoke();
+                action1Check = false;
             }
         }
 
         private void HandleAttack2()
         {
-            if (Input.GetAxis("Fire2") == 1 && attack2Check)
+            if (Input.GetAxis("Fire2") == 1 && action2Check)
             {
-                ActionAttack2?.Invoke();
-                attack2Check = false;
+                Action2?.Invoke();
+                action2Check = false;
             }
-            if (Input.GetAxis("Fire2") == 0 && !attack2Check)
+            if (Input.GetAxis("Fire2") == 0 && !action2Check)
             {
-                attack2Check = true;
+                action2Check = true;
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
-                ActionAttack2?.Invoke();
-                attack2Check = false;
+                Action2?.Invoke();
+                action2Check = false;
             }
         }
 

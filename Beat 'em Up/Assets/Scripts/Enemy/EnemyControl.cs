@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class EnemyControl : CharacterControl
 {
+    [Tooltip("Set to TRUE if you're debugging the enemy behaviours.\nDoesn't need a LevelManager to work.")]
     [SerializeField]
     private bool debug = false;
     [SerializeField]
     private float healthValue = 1.0f;
+    [Tooltip("Amount of time the Player staggers back when hit.")]
+    [SerializeField]
+    private float staggerTime = .5f;
     [SerializeField]
     private CharacterAttack attackNormal = null;
     [SerializeField]
@@ -46,12 +50,14 @@ public class EnemyControl : CharacterControl
     protected override void SetUp()
     {
         base.SetUp();
+        attackNormal.ResetTimer();
+        attackHeavy.ResetTimer();
         characterAnimator.SetUp(animator);
         attackNormal.OnAttack += characterAnimator.AttackAnimation;
         attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
         health.Set(healthValue);
         health.OnDamageReceived += characterAnimator.HitAnimation;
-        health.OnDamageReceived += BounceBack;
+        health.OnDamageReceived += Stagger;
         health.OnHealthDepleted += Die;
     }
 
@@ -62,6 +68,11 @@ public class EnemyControl : CharacterControl
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
         stateMachine = GetComponent<StateMachine>();
+    }
+
+    private void Stagger()
+    {
+        BounceBack(staggerTime);
     }
 
     private void Die()

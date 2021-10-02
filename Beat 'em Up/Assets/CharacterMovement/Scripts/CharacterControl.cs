@@ -34,9 +34,12 @@ namespace CoreCharacter
             characterMovement = CharacterUtilities.TryGetComponent<CharacterMovement>(gameObject);
         }
 
-        protected void BounceBack()
+        /// <summary>
+        /// Bounce Character back for x amount of seconds.
+        /// </summary>
+        protected void BounceBack(float bounceBackTime)
         {
-            StartCoroutine(BounceBackRoutine(.2f));
+            StartCoroutine(BounceBackRoutine(bounceBackTime));
         }
 
         private IEnumerator BounceBackRoutine(float time)

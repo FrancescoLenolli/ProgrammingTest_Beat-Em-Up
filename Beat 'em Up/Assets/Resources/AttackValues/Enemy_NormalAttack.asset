@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fbbdafe04782694f92387a0577c5fde, type: 3}
   m_Name: Enemy_NormalAttack
   m_EditorClassIdentifier: 
-  rate: 1.5
+  rate: 3
   range: 0.3
-  area: 0.4
   damage: 1

@@ -172,10 +172,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementValues: {fileID: 11400000, guid: 9f6e81ba439b60b4f9f13ac45792e4f2, type: 2}
   characterMovement: {fileID: 0}
-  healthValue: 20
+  interactingCharacterDirection: {x: 0, y: 0, z: 0}
+  debug: 0
+  healthValue: 4
+  staggerTime: 0.6
   attackNormal: {fileID: 2320974336520750193}
   attackHeavy: {fileID: 9121211904503374207}
-  debug: 0
 --- !u!114 &5353435600787058364
 MonoBehaviour:
   m_ObjectHideFlags: 0
