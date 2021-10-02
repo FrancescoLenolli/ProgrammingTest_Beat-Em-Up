@@ -173,7 +173,9 @@ MonoBehaviour:
   prefabEnemy: {fileID: 5353435600787058353, guid: c44e4688e2b7a834f9e44bc557359dcb,
     type: 3}
   enemyCount: 2
-  spawnDelay: 2
+  spawnDelay: 1
+  restartOnPlayerInput: 0
+  restartDelay: 0.5
   cameraController: {fileID: 963194231}
   lowerLimit: {fileID: 1609393419}
   upperLimit: {fileID: 210002308}

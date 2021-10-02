@@ -9,6 +9,7 @@ namespace CoreCharacter
         public bool canMove = true;
 
         private MovementValues movementValues;
+        private MovementType movementType;
         private Rigidbody rb;
         private Rigidbody2D rb2D;
         private Vector3 moveInputValue;
@@ -37,21 +38,12 @@ namespace CoreCharacter
             if (movementValues.isCharacterBidimensional)
             {
                 rb2D = rigidbody2D;
-                if (movementValues.inputType == InputType.XYAxis)
-                {
-                    rb2D.gravityScale = 0;
-                    rb2D.freezeRotation = true;
-                }
+                movementType = new TwoDimensionMovement(rb2D, transform, movementValues);
             }
             else
             {
                 rb = rigidbody;
-                if (movementValues.inputType == InputType.XYAxis)
-                {
-                    if (rb)
-                        rb.isKinematic = true;
-                    isjumpEnabled = false;
-                }
+                movementType = new ThreeDimensionMovement(rb, transform, movementValues, out isjumpEnabled);
             }
         }
 
@@ -83,21 +75,7 @@ namespace CoreCharacter
 
         private void HandlePosition(Vector3 moveInputValue)
         {
-            Vector3 velocity = movementValues.speed * Time.fixedDeltaTime * moveInputValue;
-            Vector3 newPosition = transform.position + velocity;
-
-            if (movementValues.isCharacterBidimensional && rb2D)
-            {
-                rb2D.MovePosition(new Vector2(newPosition.x, newPosition.y));
-
-                if (moveInputValue != Vector3.zero)
-                    transform.rotation = moveInputValue.x < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
-            }
-            else if (rb)
-            {
-                rb.MovePosition(newPosition);
-            }
-
+            movementType.Move(moveInputValue);
         }
 
         private void HandleJump()
