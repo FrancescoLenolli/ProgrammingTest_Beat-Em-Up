@@ -12,7 +12,8 @@ public class EnemyAttack : CharacterAttack
             PlayerControl player = hit.collider.GetComponent<PlayerControl>();
             if (player)
             {
-                player.otherCharacterDirection = transform.right;
+                // Tell the player the direction of the attack to apply the BounceBack status correctly.
+                player.interactingCharacterDirection = transform.right;
                 player.Health?.Damage(attackValues.damage);
             }
         }

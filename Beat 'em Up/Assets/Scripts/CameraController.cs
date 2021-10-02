@@ -28,6 +28,10 @@ public class CameraController : MonoBehaviour
         SetCameraLimits(lowerLimit.position, upperLimit.position);
     }
 
+    /// <summary>
+    /// If set to TRUE, stop the camera in his current position.
+    /// </summary>
+    /// <param name="lockCamera"></param>
     public void LockCamera(bool lockCamera)
     {
         isCameraLocked = lockCamera;
@@ -50,9 +54,14 @@ public class CameraController : MonoBehaviour
         return new Vector3(transform.position.x - cameraHorizontalSize, transform.position.y, 0);
     }
 
-
+    /// <summary>
+    /// Camera should not move outside these limits.
+    /// </summary>
+    /// <param name="lowLimit"></param> The bottom left of the current Level.
+    /// <param name="highLimit"></param> The top right of the current Level.
     private void SetCameraLimits(Vector3 lowLimit, Vector3 highLimit)
     {
+        // OrthographicSize = height of a camera with an Ortographic viewport.
         float cameraSize = mainCamera.orthographicSize;
 
         positionXLimit = new Vector2(lowLimit.x + (cameraSize*2), highLimit.x - (cameraSize*2));

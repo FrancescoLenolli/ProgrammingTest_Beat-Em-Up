@@ -29,20 +29,20 @@ namespace CoreCharacter
             HandleJump();
         }
 
-        public void SetUp(Rigidbody rigidbody, Rigidbody2D rigidbody2D, MovementValues movementValues)
+        public void SetUp(MovementValues movementValues)
         {
             this.movementValues = movementValues;
-            moveInputValue = Vector2.zero;
+            moveInputValue = Vector3.zero;
             isJumping = false;
 
             if (movementValues.isCharacterBidimensional)
             {
-                rb2D = rigidbody2D;
+                rb2D = CharacterUtilities.TryGetComponent<Rigidbody2D>(gameObject);
                 movementType = new TwoDimensionMovement(rb2D, transform, movementValues);
             }
             else
             {
-                rb = rigidbody;
+                rb = CharacterUtilities.TryGetComponent<Rigidbody>(gameObject);
                 movementType = new ThreeDimensionMovement(rb, transform, movementValues, out isjumpEnabled);
             }
         }

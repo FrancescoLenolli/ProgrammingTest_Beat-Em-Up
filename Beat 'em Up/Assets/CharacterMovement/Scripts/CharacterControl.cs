@@ -11,12 +11,11 @@ namespace CoreCharacter
 
         [HideInInspector]
         public CharacterMovement characterMovement = null;
+        // Direction of another character interacting wiht this one.
         [HideInInspector]
-        public Vector3 otherCharacterDirection;
+        public Vector3 interactingCharacterDirection;
 
         protected CharacterInput characterInput;
-        private Rigidbody rb;
-        private Rigidbody2D rb2D;
 
         private void Start()
         {
@@ -27,18 +26,12 @@ namespace CoreCharacter
         {
             GetComponents();
 
-            characterMovement.SetUp(rb, rb2D, movementValues);
+            characterMovement.SetUp(movementValues);
         }
 
         protected virtual void GetComponents()
         {
             characterMovement = CharacterUtilities.TryGetComponent<CharacterMovement>(gameObject);
-
-            if (movementValues.isCharacterBidimensional)
-                rb2D = CharacterUtilities.TryGetComponent<Rigidbody2D>(gameObject);
-            else
-                rb = CharacterUtilities.TryGetComponent<Rigidbody>(gameObject);
-
         }
 
         protected void BounceBack()
@@ -55,7 +48,7 @@ namespace CoreCharacter
             while (timer > 0.0f)
             {
                 timer -= Time.deltaTime;
-                transform.position += speed * Time.deltaTime * otherCharacterDirection;
+                transform.position += speed * Time.deltaTime * interactingCharacterDirection;
                 yield return null;
             }
 

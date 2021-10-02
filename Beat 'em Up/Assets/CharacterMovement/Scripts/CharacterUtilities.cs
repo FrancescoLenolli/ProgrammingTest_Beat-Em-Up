@@ -25,7 +25,7 @@ namespace CoreCharacter.Utilities
         }
 
         /// <summary>
-        /// Returns TRUE if the given rigidbody is falling down.
+        /// Returns TRUE if the given Rigidbody is falling down.
         /// </summary>
         /// <param name="rigidbody"></param>
         /// <returns></returns>
@@ -41,21 +41,7 @@ namespace CoreCharacter.Utilities
         }
 
         /// <summary>
-        /// Return squared distance between two objects.
-        /// Avoid costly squared calculation.
-        /// </summary>
-        /// <param name="character"></param>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        public static float SqrDistance(Transform character, Transform target)
-        {
-            Vector3 offset = target.position - character.position;
-
-            return offset.sqrMagnitude;
-        }
-
-        /// <summary>
-        /// Return true if the target is within a certain range from the character.
+        /// Return true if the Target is within a certain range from the Character.
         /// </summary>
         /// <param name="character"></param>
         /// <param name="target"></param>
@@ -65,11 +51,11 @@ namespace CoreCharacter.Utilities
         {
             Vector3 offset = target.position - character.position;
 
-            return offset.sqrMagnitude < range * range;
+            return offset.sqrMagnitude <= range * range;
         }
 
         /// <summary>
-        /// Try to get a gameobject component, Add it on the fly if missing.
+        /// Try to get a Gameobject Component, Add it on the fly if missing.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="gameObject"></param>

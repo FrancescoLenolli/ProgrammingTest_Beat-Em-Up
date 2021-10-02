@@ -21,14 +21,15 @@ public class PlayerControl : CharacterControl
     public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
     public bool IsAlive { get => isAlive; set => isAlive = value; }
 
-    public void RestartLevel(Vector3 position)
+    public void Restart(Vector3 position)
     {
         transform.position = position;
         isAlive = true;
         health.Revive();
-        characterMovement.canMove = true;
-        characterAnimator.CanAnimate = true;
         characterAnimator.DeathToIdleAnimation();
+        characterMovement.canMove = true;
+        Debug.Log("Can Move");
+        characterAnimator.CanAnimate = true;
     }
 
     protected override void SetUp()

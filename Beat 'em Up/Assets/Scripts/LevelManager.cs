@@ -23,10 +23,13 @@ public class LevelManager : MonoBehaviour
     private float restartDelay = .5f;
     [SerializeField]
     private CameraController cameraController = null;
+    [Tooltip("Bottom left of the current Level.")]
     [SerializeField]
     private Transform lowerLimit = null;
+    [Tooltip("Top right of the current Level.")]
     [SerializeField]
     private Transform upperLimit = null;
+    [Tooltip("On what positions can a Wave of enemies start.")]
     [SerializeField]
     private List<Transform> wavesPosition = new List<Transform>();
 
@@ -35,19 +38,25 @@ public class LevelManager : MonoBehaviour
     private int currentIndex;
     private int activeEnemiesCount;
     private bool canStartWave;
+    private bool canRestartLevel;
+    private List<EnemyControl> enemies = new List<EnemyControl>();
 
     private void Awake()
     {
         player = FindObjectOfType<PlayerControl>();
         startingPosition = player.transform.position;
         canStartWave = true;
+        canRestartLevel = true;
         currentIndex = 0;
         cameraController.SetUp(lowerLimit, upperLimit, player.transform);
     }
 
     private void Update()
     {
-        if (!player.IsAlive)
+        if (!player)
+            return;
+
+        if (!player.IsAlive && canRestartLevel)
             StartCoroutine(ResetLevelRoutine());
 
         if (currentIndex == wavesPosition.Count || !(player.transform.position.x >= wavesPosition[currentIndex].localPosition.x) || !canStartWave)
@@ -75,13 +84,16 @@ public class LevelManager : MonoBehaviour
     private void SpawnEnemy(float leftPosition, float righPosition)
     {
         float positionY = cameraController.transform.position.y + Random.Range(-.2f, .2f);
-        // Randomly decide if enemies should spawn on the left or right of the camera viewport
-        float cameraLimit = Random.Range(0, 2) == 0 ? righPosition : leftPosition;
-        // Add an offset to the right limit to spawn enemies outside the camera viewport.
-        Vector3 startingPosition = new Vector3(cameraLimit + .5f, positionY, 0);
+        float positionOffset = .5f;
+
+        // Randomly decide if enemies should spawn on the left or right of the camera viewport.
+        // Add an offset to spawn them outside the camera viewport.
+        float cameraLimit = Random.Range(0, 2) == 0 ? righPosition + positionOffset : leftPosition - positionOffset;
+        Vector3 startingPosition = new Vector3(cameraLimit, positionY, 0);
 
         EnemyControl newEnemy = Instantiate(prefabEnemy);
         newEnemy.Init(this, player, startingPosition);
+        enemies.Add(newEnemy);
         ++activeEnemiesCount;
     }
 
@@ -103,6 +115,7 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ResetLevelRoutine()
     {
+        canRestartLevel = false;
         canStartWave = false;
 
         if (restartOnPlayerInput)
@@ -111,12 +124,14 @@ public class LevelManager : MonoBehaviour
         else
             yield return new WaitForSeconds(restartDelay);
 
-        FindObjectsOfType<EnemyControl>().ToList().ForEach(enemy => Destroy(enemy.gameObject));
-        player.RestartLevel(startingPosition);
+        enemies.ForEach(enemy => Destroy(enemy.gameObject));
+        enemies.Clear();
         currentIndex = 0;
         activeEnemiesCount = 0;
-        canStartWave = true;
         cameraController.LockCamera(false);
+        player.Restart(startingPosition);
+        canStartWave = true;
+        canRestartLevel = true;
 
         yield return null;
     }
