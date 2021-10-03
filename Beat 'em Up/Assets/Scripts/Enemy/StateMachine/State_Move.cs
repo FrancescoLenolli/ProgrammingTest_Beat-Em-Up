@@ -39,6 +39,6 @@ public class State_Move : State
     private void Move(Vector3 moveInput)
     {
         Owner.characterMovement.HandleMovement(moveInput);
-        Owner.CharacterAnimator.HandleAnimation(moveInput);
+        Owner.EnemyAnimator.HandleAnimation(moveInput);
     }
 }

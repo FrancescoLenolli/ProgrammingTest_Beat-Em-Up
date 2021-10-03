@@ -21,7 +21,7 @@ public class State_Attack : State
             normalAttack = true;
         }
 
-        Owner.CharacterAnimator.IdleAnimation();
+        Owner.EnemyAnimator.IdleAnimation();
         StateMachine.SwitchState(typeof(State_Move));
     }
 }

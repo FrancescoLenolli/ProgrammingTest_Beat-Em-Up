@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyControl : CharacterControl
 {
-    [Tooltip("Set to TRUE if you're debugging the enemy behaviours.\nDoesn't need a LevelManager to work.")]
+    [Tooltip("Set to TRUE if you're testing the project.\nThe enemy doesn't need a LevelManager to work.")]
     [SerializeField]
     private bool debug = false;
     [SerializeField]
@@ -19,16 +19,17 @@ public class EnemyControl : CharacterControl
     private CharacterAttack attackHeavy = null;
 
     private Animator animator;
-    private CharacterAnimator characterAnimator;
+    private EnemyAnimator enemyAnimator;
     private PlayerControl target;
     private HealthComponent health;
     private StateMachine stateMachine;
+    private bool canBeStunned = true;
 
-    public HealthComponent Health { get => health; set => health = value; }
     public PlayerControl Target { get => target; }
+    public EnemyAnimator EnemyAnimator { get => enemyAnimator; }
+    public HealthComponent Health { get => health; }
     public CharacterAttack AttackNormal { get => attackNormal; }
-    public CharacterAttack AttackHeavy { get => attackHeavy; set => attackHeavy = value; }
-    public CharacterAnimator CharacterAnimator { get => characterAnimator; }
+    public CharacterAttack AttackHeavy { get => attackHeavy; }
 
     private void Awake()
     {
@@ -47,16 +48,24 @@ public class EnemyControl : CharacterControl
         health.OnHealthDepleted += levelManager.EnemyDied;
     }
 
+    public void Stun(float stunTime)
+    {
+        if (!canBeStunned || health.Depleted)
+            return;
+
+        StartCoroutine(StunRoutine(stunTime));
+    }
+
     protected override void SetUp()
     {
         base.SetUp();
         attackNormal.ResetTimer();
         attackHeavy.ResetTimer();
-        characterAnimator.SetUp(animator);
-        attackNormal.OnAttack += characterAnimator.AttackAnimation;
-        attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
+        enemyAnimator.SetUp(animator);
+        attackNormal.OnAttack += enemyAnimator.AttackAnimation;
+        attackHeavy.OnAttack += enemyAnimator.AttackHeavyAnimation;
         health.Set(healthValue);
-        health.OnDamageReceived += characterAnimator.HitAnimation;
+        health.OnDamageReceived += enemyAnimator.HitAnimation;
         health.OnDamageReceived += Stagger;
         health.OnHealthDepleted += Die;
     }
@@ -66,7 +75,7 @@ public class EnemyControl : CharacterControl
         base.GetComponents();
         animator = GetComponent<Animator>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
-        characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
+        enemyAnimator = CharacterUtilities.TryGetComponent<EnemyAnimator>(gameObject);
         stateMachine = GetComponent<StateMachine>();
     }
 
@@ -78,6 +87,39 @@ public class EnemyControl : CharacterControl
     private void Die()
     {
         stateMachine.Stop();
-        characterAnimator.DeathAnimation();
+        enemyAnimator.DeathAnimation();
+    }
+
+    private IEnumerator StunRoutine(float stunTime)
+    {
+        canBeStunned = false;
+        float timer = stunTime;
+        float speed = .1f;
+        characterMovement.CanMove = false;
+        health.IsInvincible = true;
+
+        enemyAnimator.StunAnimation();
+
+        // Bounce back for a third of the time...
+        while (timer > timer / 3)
+        {
+            timer -= Time.deltaTime;
+            transform.position += speed * Time.deltaTime * interactingCharacterDirection;
+            yield return null;
+        }
+
+        enemyAnimator.StunToIdleAnimation();
+
+        //...then get up and stand in position for the remaining time.
+        while (timer > .0f)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        characterMovement.CanMove = true;
+        health.IsInvincible = false;
+        canBeStunned = true;
+        yield return null;
     }
 }

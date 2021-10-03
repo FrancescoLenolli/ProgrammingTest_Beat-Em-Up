@@ -1,15 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Cinemachine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    [Tooltip("Set to TRUE if you're testing the project.\nThe camera doesn't need a LevelManager to work.\n" +
+        "Be sure to have two objects in the scene named 'UpperLimit' and 'LowerLimit'.\n" +
+        "They will be used to limit the camera position to a certain area.")]
+    [SerializeField]
+    private bool debug = false;
+
     private Camera mainCamera;
     private Transform targetTransform;
     private Vector2 positionXLimit;
     private Vector2 positionYLimit;
     private bool isCameraLocked;
+
+    private void Awake()
+    {
+        if (debug)
+        {
+            mainCamera = GetComponent<Camera>();
+            Transform lowerLimit = GameObject.Find("LowerLimit").transform;
+            Transform upperLimit = GameObject.Find("UpperLimit").transform;
+            SetCameraLimits(lowerLimit.position, upperLimit.position);
+            targetTransform = FindObjectOfType<PlayerControl>().transform;
+            isCameraLocked = false;
+        }
+    }
 
     private void LateUpdate()
     {
@@ -64,7 +80,7 @@ public class CameraController : MonoBehaviour
         // OrthographicSize = height of a camera with an Ortographic viewport.
         float cameraSize = mainCamera.orthographicSize;
 
-        positionXLimit = new Vector2(lowLimit.x + (cameraSize*2), highLimit.x - (cameraSize*2));
+        positionXLimit = new Vector2(lowLimit.x + (cameraSize * 2), highLimit.x - (cameraSize * 2));
         positionYLimit = new Vector2(lowLimit.y + cameraSize, highLimit.y - cameraSize);
     }
 }

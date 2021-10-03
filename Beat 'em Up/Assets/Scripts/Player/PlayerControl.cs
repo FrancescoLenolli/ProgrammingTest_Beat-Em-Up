@@ -16,7 +16,7 @@ public class PlayerControl : CharacterControl
 
     private bool isAlive = true;
     private Animator animator;
-    private CharacterAnimator characterAnimator;
+    private PlayerAnimator playerAnimator;
     private HealthComponent health;
 
     public HealthComponent Health { get => health; set => health = value; }
@@ -29,26 +29,26 @@ public class PlayerControl : CharacterControl
         transform.position = position;
         isAlive = true;
         health.Revive();
-        characterAnimator.DeathToIdleAnimation();
-        characterMovement.canMove = true;
+        playerAnimator.DeathToIdleAnimation();
+        characterMovement.CanMove = true;
         Debug.Log("Can Move");
-        characterAnimator.CanAnimate = true;
+        playerAnimator.CanAnimate = true;
     }
 
     protected override void SetUp()
     {
         base.SetUp();
-        characterAnimator.SetUp(animator);
+        playerAnimator.SetUp(animator);
         health.Set(healthValue);
 
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
-        characterInput.ActionMove += characterAnimator.HandleAnimation;
+        characterInput.ActionMove += playerAnimator.HandleAnimation;
         characterInput.Action1 += attackNormal.StartAttack;
         characterInput.Action2 += attackHeavy.StartAttack;
-        attackNormal.OnAttack += characterAnimator.AttackAnimation;
-        attackHeavy.OnAttack += characterAnimator.AttackHeavyAnimation;
-        health.OnDamageReceived += characterAnimator.HitAnimation;
+        attackNormal.OnAttack += playerAnimator.AttackAnimation;
+        attackHeavy.OnAttack += playerAnimator.AttackHeavyAnimation;
+        health.OnDamageReceived += playerAnimator.HitAnimation;
         health.OnDamageReceived += Stagger;
         health.OnHealthDepleted += Die;
     }
@@ -59,7 +59,7 @@ public class PlayerControl : CharacterControl
         animator = GetComponent<Animator>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
-        characterAnimator = CharacterUtilities.TryGetComponent<CharacterAnimator>(gameObject);
+        playerAnimator = CharacterUtilities.TryGetComponent<PlayerAnimator>(gameObject);
     }
 
     private void Stagger()
@@ -70,8 +70,8 @@ public class PlayerControl : CharacterControl
     private void Die()
     {
         isAlive = false;
-        characterMovement.canMove = false;
-        characterAnimator.CanAnimate = false;
-        characterAnimator.DeathAnimation();
+        characterMovement.CanMove = false;
+        playerAnimator.CanAnimate = false;
+        playerAnimator.DeathAnimation();
     }
 }

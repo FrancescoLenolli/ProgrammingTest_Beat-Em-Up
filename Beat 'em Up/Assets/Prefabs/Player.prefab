@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 2458519104036297732}
   - component: {fileID: 2458519104036297730}
   - component: {fileID: 1889757641}
-  - component: {fileID: 94623406}
+  - component: {fileID: 6312174202753550323}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -203,9 +203,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementValues: {fileID: 11400000, guid: 64dafea80d9292f489eee92c4e2be44a, type: 2}
   characterMovement: {fileID: 0}
+  interactingCharacterDirection: {x: 0, y: 0, z: 0}
   healthValue: 2
+  staggerTime: 0.5
   attackNormal: {fileID: 1889757641}
-  attackHeavy: {fileID: 94623406}
+  attackHeavy: {fileID: 6312174202753550323}
 --- !u!114 &1889757641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackValues: {fileID: 11400000, guid: 03d042d7e97b57f48bd1f47853c6e511, type: 2}
---- !u!114 &94623406
+--- !u!114 &6312174202753550323
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -228,7 +230,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2458519104036297759}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f83df35d3cf595b47b374179bacd612e, type: 3}
+  m_Script: {fileID: 11500000, guid: d9e704c2a397e0d41b0c1da98fdf1a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attackValues: {fileID: 11400000, guid: cd5baf6848f52e14c81a866d0c83b683, type: 2}
+  stunTime: 1

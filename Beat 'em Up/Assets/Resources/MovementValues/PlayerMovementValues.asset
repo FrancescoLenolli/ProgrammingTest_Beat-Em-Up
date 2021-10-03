@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputType: 1
   isCharacterBidimensional: 1
-  speed: 0.7
+  speed: 0.5
   jumpForce: 1

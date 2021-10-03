@@ -5,18 +5,18 @@ namespace CoreCharacter
 {
     public class CharacterMovement : MonoBehaviour
     {
-        [HideInInspector]
-        public bool canMove = true;
-
         private MovementValues movementValues;
         private MovementType movementType;
         private Rigidbody rb;
         private Rigidbody2D rb2D;
         private Vector3 moveInputValue;
+        private bool canMove = true;
         private bool canJump;
         private bool isJumping;
         private bool isjumpEnabled = true;
         private bool isGrounded;
+
+        public bool CanMove { get => canMove; set => canMove = value; }
 
         private void FixedUpdate()
         {

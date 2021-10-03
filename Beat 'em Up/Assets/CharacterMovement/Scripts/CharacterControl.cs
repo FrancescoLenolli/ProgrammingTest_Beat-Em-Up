@@ -17,6 +17,8 @@ namespace CoreCharacter
 
         protected CharacterInput characterInput;
 
+        private bool canBounceBack = true;
+
         private void Start()
         {
             SetUp();
@@ -44,9 +46,14 @@ namespace CoreCharacter
 
         private IEnumerator BounceBackRoutine(float time)
         {
+            if (!canBounceBack)
+                yield return null;
+
+            canBounceBack = false;
+
             float timer = time;
             float speed = 1.0f;
-            characterMovement.canMove = false;
+            characterMovement.CanMove = false;
 
             while (timer > 0.0f)
             {
@@ -55,7 +62,8 @@ namespace CoreCharacter
                 yield return null;
             }
 
-            characterMovement.canMove = true;
+            characterMovement.CanMove = true;
+            canBounceBack = true;
             yield return null;
         }
     }
