@@ -26,47 +26,9 @@ namespace CoreCharacter
         {
             HandleMove();
             HandleRotate();
-            HandleJump();
-            HandleAttack1();
-            HandleAttack2();
-        }
-
-        private void HandleAttack1()
-        {
-            if (Input.GetAxis("Fire3") == 1 && action1Check)
-            {
-                Action1?.Invoke();
-                action1Check = false;
-            }
-            if (Input.GetAxis("Fire3") == 0 && !action1Check)
-            {
-                action1Check = true;
-            }
-
-            if(Input.GetKeyDown(KeyCode.K))
-            {
-                Action1?.Invoke();
-                action1Check = false;
-            }
-        }
-
-        private void HandleAttack2()
-        {
-            if (Input.GetAxis("Fire2") == 1 && action2Check)
-            {
-                Action2?.Invoke();
-                action2Check = false;
-            }
-            if (Input.GetAxis("Fire2") == 0 && !action2Check)
-            {
-                action2Check = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                Action2?.Invoke();
-                action2Check = false;
-            }
+            HandleAction(Input.GetAxis("Jump"), jumpCheck, actionJump, out jumpCheck);
+            HandleAction(Input.GetAxis("Fire3"), action1Check, action1, out action1Check);
+            HandleAction(Input.GetAxis("Fire2"), action2Check, action2, out action2Check);
         }
 
         private void HandleMove()
@@ -82,17 +44,25 @@ namespace CoreCharacter
             actionRotate?.Invoke(rotateInput);
         }
 
-        private void HandleJump()
+        private void HandleAction(float axisValue, bool check, Action action, out bool checkValue)
         {
-            if (Input.GetAxis("Jump") == 1 && jumpCheck)
+            /* The input sent when pressing the axis's button is continuously sent.
+             * I need to have some checks to have them behave like a standard on/off button.
+             */
+
+            bool checkResult = true;
+
+            if (axisValue == 1 && check)
             {
-                actionJump?.Invoke();
-                jumpCheck = false;
+                action?.Invoke();
+                checkResult = false;
             }
-            if (Input.GetAxis("Jump") == 0 && !jumpCheck)
+            if (axisValue == 0 && !check)
             {
-                jumpCheck = true;
+                checkResult = true;
             }
+
+            checkValue = checkResult;
         }
     }
 }

@@ -32,7 +32,7 @@ public class PlayerControl : CharacterControl
         playerAnimator.DeathToIdleAnimation();
         characterMovement.CanMove = true;
         Debug.Log("Can Move");
-        playerAnimator.CanAnimate = true;
+        playerAnimator.CanAnimateMovement = true;
     }
 
     protected override void SetUp()
@@ -71,7 +71,7 @@ public class PlayerControl : CharacterControl
     {
         isAlive = false;
         characterMovement.CanMove = false;
-        playerAnimator.CanAnimate = false;
+        playerAnimator.CanAnimateMovement = false;
         playerAnimator.DeathAnimation();
     }
 }

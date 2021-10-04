@@ -10,10 +10,9 @@ namespace CoreCharacter
         private Rigidbody rb;
         private Rigidbody2D rb2D;
         private Vector3 moveInputValue;
-        private bool canMove = true;
+        private bool canMove;
         private bool canJump;
         private bool isJumping;
-        private bool isjumpEnabled = true;
         private bool isGrounded;
 
         public bool CanMove { get => canMove; set => canMove = value; }
@@ -23,7 +22,7 @@ namespace CoreCharacter
             if (!movementValues.isCharacterBidimensional)
                 isGrounded = CharacterUtilities.IsGrounded(rb.transform);
 
-            if (!isjumpEnabled)
+            if (!canJump)
                 return;
 
             HandleJump();
@@ -33,17 +32,19 @@ namespace CoreCharacter
         {
             this.movementValues = movementValues;
             moveInputValue = Vector3.zero;
+            canMove = true;
+            canJump = true;
             isJumping = false;
 
             if (movementValues.isCharacterBidimensional)
             {
                 rb2D = CharacterUtilities.TryGetComponent<Rigidbody2D>(gameObject);
-                movementType = new TwoDimensionRigidbodyMovement(rb2D, transform, movementValues);
+                movementType = new TwoDimensionRigidbodyMovement(rb2D, transform, movementValues, out canJump);
             }
             else
             {
                 rb = CharacterUtilities.TryGetComponent<Rigidbody>(gameObject);
-                movementType = new ThreeDimensionRigidbodyMovement(rb, transform, movementValues, out isjumpEnabled);
+                movementType = new ThreeDimensionRigidbodyMovement(rb, transform, movementValues, out canJump);
             }
         }
 
@@ -56,6 +57,9 @@ namespace CoreCharacter
             HandlePosition(moveInputValue);
         }
 
+        /// <summary>
+        /// Rotate to face the moement direction.
+        /// </summary>
         public void HandleRotation()
         {
             if (moveInputValue == Vector3.zero)
@@ -102,6 +106,11 @@ namespace CoreCharacter
             canJump = false;
         }
 
+        /// <summary>
+        /// Modify input received according to the InputType selected on the MovementValue used.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         private Vector3 ModifyInput(Vector3 input)
         {
             Vector3 result = Vector3.zero;

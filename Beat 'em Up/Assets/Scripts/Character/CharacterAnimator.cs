@@ -3,7 +3,7 @@
 public class CharacterAnimator : MonoBehaviour
 {
     protected Animator animator;
-    protected bool canAnimate;
+    protected bool canAnimateMovement;
     protected int attackTriggerHash;
     protected int attackHeavyTriggerHash;
     protected int idleTriggerHash;
@@ -12,12 +12,16 @@ public class CharacterAnimator : MonoBehaviour
     protected int hitTriggerHash;
     protected int deathTriggerHash;
 
-    public bool CanAnimate { get => canAnimate; set => canAnimate = value; }
+    /// <summary>
+    /// Can the movement animations be player?
+    /// </summary>
+    public bool CanAnimateMovement { get => canAnimateMovement; set => canAnimateMovement = value; }
 
     public virtual void SetUp(Animator animator)
     {
-        canAnimate = true;
+        canAnimateMovement = true;
         this.animator = animator;
+        // Store the value of the trigger for better performance.
         attackTriggerHash = Animator.StringToHash("Attack");
         attackHeavyTriggerHash = Animator.StringToHash("Attack_Heavy");
         idleTriggerHash = Animator.StringToHash("Idle");
@@ -29,7 +33,7 @@ public class CharacterAnimator : MonoBehaviour
 
     public void HandleAnimation(Vector3 input)
     {
-        if (!animator || !canAnimate)
+        if (!animator || !canAnimateMovement)
             return;
 
         if (input != Vector3.zero)

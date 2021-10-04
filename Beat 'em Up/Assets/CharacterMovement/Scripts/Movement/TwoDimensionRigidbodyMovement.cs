@@ -7,17 +7,21 @@ namespace CoreCharacter
         /// <summary>
         /// Move character using a Rigidbody2D Component.
         /// </summary>
-        public TwoDimensionRigidbodyMovement(Rigidbody2D rb2D, Transform transform, MovementValues movementValues)
+        public TwoDimensionRigidbodyMovement(Rigidbody2D rb2D, Transform transform, MovementValues movementValues, out bool canJump)
         {
             this.rb2D = rb2D;
             this.transform = transform;
             this.movementValues = movementValues;
+            bool jumpEnabled = true;
 
             if (movementValues.inputType == InputType.XYAxis)
             {
                 rb2D.gravityScale = 0;
                 rb2D.freezeRotation = true;
+                jumpEnabled = false;
             }
+
+            canJump = jumpEnabled;
         }
 
         public override void Move(Vector3 moveInput)

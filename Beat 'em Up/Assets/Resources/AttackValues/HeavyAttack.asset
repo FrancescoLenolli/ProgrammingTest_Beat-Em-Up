@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: HeavyAttack
   m_EditorClassIdentifier: 
   rate: 1.5
-  range: 0.2
-  area: 0.4
-  damage: 3
+  range: 0.4
+  damage: 5

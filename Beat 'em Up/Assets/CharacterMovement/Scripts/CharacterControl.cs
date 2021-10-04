@@ -38,7 +38,7 @@ namespace CoreCharacter
         }
 
         /// <summary>
-        /// Bounce Character back for x amount of seconds.
+        /// Move Character back for x amount of seconds.
         /// </summary>
         protected void BounceBack(float bounceBackTime)
         {

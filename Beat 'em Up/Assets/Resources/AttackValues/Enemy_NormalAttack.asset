@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rate: 3
   range: 0.3
-  damage: 1
+  damage: 2
