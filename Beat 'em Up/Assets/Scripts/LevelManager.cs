@@ -58,10 +58,11 @@ public class LevelManager : MonoBehaviour
         if (!player.IsAlive && canRestartLevel)
             StartCoroutine(ResetLevelRoutine());
 
-        if (currentIndex == wavesPosition.Count || !(player.transform.position.x >= wavesPosition[currentIndex].localPosition.x) || !canStartWave)
+        bool canStartNextWave = currentIndex != wavesPosition.Count && player.transform.position.x >= wavesPosition[currentIndex].localPosition.x && canStartWave;
+        if (!canStartNextWave)
             return;
 
-        StartWave();
+        StartCoroutine(StartWaveRoutine());
     }
 
     public void EnemyDied()
@@ -72,11 +73,6 @@ public class LevelManager : MonoBehaviour
         {
             EndWave();
         }
-    }
-
-    private void StartWave()
-    {
-        StartCoroutine(StartWaveRoutine());
     }
 
     private void SpawnEnemy(float leftPosition, float righPosition)

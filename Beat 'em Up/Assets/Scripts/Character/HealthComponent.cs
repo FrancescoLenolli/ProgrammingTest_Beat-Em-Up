@@ -29,7 +29,7 @@ public class HealthComponent : MonoBehaviour
 
     public void Damage(float damageValue)
     {
-        if(IsInvincible)
+        if (IsInvincible)
         {
             Debug.Log($"{gameObject.name} is invincible and can't be damaged");
             return;

@@ -1,5 +1,4 @@
-﻿using CoreCharacter;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyAttack : CharacterAttack
 {

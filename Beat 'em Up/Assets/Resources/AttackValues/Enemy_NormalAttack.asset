@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy_NormalAttack
   m_EditorClassIdentifier: 
   rate: 3
-  range: 0.3
+  range: 0.2
   damage: 2

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterAttack : MonoBehaviour
@@ -37,7 +39,12 @@ public class CharacterAttack : MonoBehaviour
     {
         onAttack?.Invoke();
         Vector3 origin = transform.position;
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(origin, attackValues.range / 2, transform.right, attackValues.range / 2);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(origin, transform.right, attackValues.range);
+
+        // Remove this character's transform from the list of colliders detected.
+        List<RaycastHit2D> listHits = hits.ToList();
+        listHits.RemoveAll(hit => hit.collider.transform == transform);
+        hits = listHits.ToArray();
 
         return hits;
     }

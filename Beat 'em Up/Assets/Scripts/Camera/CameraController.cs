@@ -17,14 +17,7 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         if (debug)
-        {
-            mainCamera = GetComponent<Camera>();
-            Transform lowerLimit = GameObject.Find("LowerLimit").transform;
-            Transform upperLimit = GameObject.Find("UpperLimit").transform;
-            SetCameraLimits(lowerLimit.position, upperLimit.position);
-            targetTransform = FindObjectOfType<PlayerControl>().transform;
-            isCameraLocked = false;
-        }
+            DebugSetUp();
     }
 
     private void LateUpdate()
@@ -32,9 +25,7 @@ public class CameraController : MonoBehaviour
         if (!targetTransform || isCameraLocked)
             return;
 
-        float positionX = Mathf.Clamp(targetTransform.position.x, positionXLimit.x, positionXLimit.y);
-        float positionY = Mathf.Clamp(targetTransform.position.y, positionYLimit.x, positionYLimit.y);
-        transform.position = new Vector3(positionX, positionY, transform.position.z);
+        MoveCamera();
     }
 
     public void SetUp(Transform lowerLimit, Transform upperLimit, Transform targetTransform)
@@ -51,11 +42,6 @@ public class CameraController : MonoBehaviour
     public void LockCamera(bool lockCamera)
     {
         isCameraLocked = lockCamera;
-    }
-
-    public bool IsCameraLocked()
-    {
-        return isCameraLocked;
     }
 
     public Vector3 GetRightLimit()
@@ -82,5 +68,23 @@ public class CameraController : MonoBehaviour
 
         positionXLimit = new Vector2(lowLimit.x + (cameraSize * 2), highLimit.x - (cameraSize * 2));
         positionYLimit = new Vector2(lowLimit.y + cameraSize, highLimit.y - cameraSize);
+    }
+
+    private void MoveCamera()
+    {
+        float positionX = Mathf.Clamp(targetTransform.position.x, positionXLimit.x, positionXLimit.y);
+        float positionY = Mathf.Clamp(targetTransform.position.y, positionYLimit.x, positionYLimit.y);
+
+        transform.position = new Vector3(positionX, positionY, transform.position.z);
+    }
+
+    private void DebugSetUp()
+    {
+        mainCamera = GetComponent<Camera>();
+        Transform lowerLimit = GameObject.Find("LowerLimit").transform;
+        Transform upperLimit = GameObject.Find("UpperLimit").transform;
+        SetCameraLimits(lowerLimit.position, upperLimit.position);
+        targetTransform = FindObjectOfType<PlayerControl>().transform;
+        isCameraLocked = false;
     }
 }
