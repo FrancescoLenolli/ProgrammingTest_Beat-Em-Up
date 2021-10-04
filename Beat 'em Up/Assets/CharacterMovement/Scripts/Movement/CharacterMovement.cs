@@ -38,12 +38,12 @@ namespace CoreCharacter
             if (movementValues.isCharacterBidimensional)
             {
                 rb2D = CharacterUtilities.TryGetComponent<Rigidbody2D>(gameObject);
-                movementType = new TwoDimensionMovement(rb2D, transform, movementValues);
+                movementType = new TwoDimensionRigidbodyMovement(rb2D, transform, movementValues);
             }
             else
             {
                 rb = CharacterUtilities.TryGetComponent<Rigidbody>(gameObject);
-                movementType = new ThreeDimensionMovement(rb, transform, movementValues, out isjumpEnabled);
+                movementType = new ThreeDimensionRigidbodyMovement(rb, transform, movementValues, out isjumpEnabled);
             }
         }
 

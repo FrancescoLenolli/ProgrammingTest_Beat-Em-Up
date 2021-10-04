@@ -2,12 +2,12 @@
 
 namespace CoreCharacter
 {
-    public class ThreeDimensionMovement : MovementType
+    public class ThreeDimensionRigidbodyMovement : MovementType
     {
         /// <summary>
         /// Move Character using a Rigidbody Component.
         /// </summary>
-        public ThreeDimensionMovement(Rigidbody rb, Transform transform, MovementValues movementValues, out bool isJumpEnabled)
+        public ThreeDimensionRigidbodyMovement(Rigidbody rb, Transform transform, MovementValues movementValues, out bool isJumpEnabled)
         {
             this.rb = rb;
             this.movementValues = movementValues;

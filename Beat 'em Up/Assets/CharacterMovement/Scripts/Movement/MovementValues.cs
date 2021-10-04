@@ -12,7 +12,7 @@ namespace CoreCharacter
     {
         [Tooltip("On which axes does the character move.")]
         public InputType inputType = InputType.XZAxis;
-        [Tooltip("When set to TRUE the character will use the Transform component to move instead of the rigidbody.")]
+        [Tooltip("When set to TRUE the character will use 2D components (Rigidbody2D etc...).")]
         public bool isCharacterBidimensional = false;
         [Tooltip("Base movement speed.")]
         public float speed = 1.0f;

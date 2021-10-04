@@ -2,12 +2,12 @@
 
 namespace CoreCharacter
 {
-    public class TwoDimensionMovement : MovementType
+    public class TwoDimensionRigidbodyMovement : MovementType
     {
         /// <summary>
         /// Move character using a Rigidbody2D Component.
         /// </summary>
-        public TwoDimensionMovement(Rigidbody2D rb2D, Transform transform, MovementValues movementValues)
+        public TwoDimensionRigidbodyMovement(Rigidbody2D rb2D, Transform transform, MovementValues movementValues)
         {
             this.rb2D = rb2D;
             this.transform = transform;
