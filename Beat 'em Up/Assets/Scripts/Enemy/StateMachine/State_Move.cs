@@ -13,7 +13,7 @@ public class State_Move : State
 
     public override void UpdateState()
     {
-        if (Owner && Owner.Target && Owner.Target.IsAlive)
+        if (Owner && Owner.Target && Owner.Target.IsAlive && !Owner.IsStunned && !Owner.IsStaggered)
         {
 
             float range = Owner.AttackNormal.attackValues.range;

@@ -18,6 +18,7 @@ public class PlayerAttack_Heavy : CharacterAttack
             if (enemy)
             {
                 enemy.interactingCharacterDirection = transform.right;
+                enemy.IsStaggered = true;
                 enemy.Health?.Damage(attackValues.damage);
                 enemy.Stun(stunTime);
             }

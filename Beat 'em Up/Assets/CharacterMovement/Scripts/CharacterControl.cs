@@ -16,8 +16,9 @@ namespace CoreCharacter
         public Vector3 interactingCharacterDirection;
 
         protected CharacterInput characterInput;
+        protected bool isStaggered = false;
 
-        private bool canBounceBack = true;
+        public bool IsStaggered { get => isStaggered; set => isStaggered = value; }
 
         private void Start()
         {
@@ -41,15 +42,13 @@ namespace CoreCharacter
         /// </summary>
         protected void BounceBack(float bounceBackTime)
         {
-            StartCoroutine(BounceBackRoutine(bounceBackTime));
+            if (!isStaggered)
+                StartCoroutine(BounceBackRoutine(bounceBackTime));
         }
 
         private IEnumerator BounceBackRoutine(float time)
         {
-            if (!canBounceBack)
-                yield return null;
-
-            canBounceBack = false;
+            isStaggered = true;
 
             float timer = time;
             float speed = 1.0f;
@@ -63,7 +62,7 @@ namespace CoreCharacter
             }
 
             characterMovement.CanMove = true;
-            canBounceBack = true;
+            isStaggered = false;
             yield return null;
         }
     }

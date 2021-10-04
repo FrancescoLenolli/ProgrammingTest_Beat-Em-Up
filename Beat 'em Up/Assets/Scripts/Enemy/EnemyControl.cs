@@ -23,13 +23,14 @@ public class EnemyControl : CharacterControl
     private PlayerControl target;
     private HealthComponent health;
     private StateMachine stateMachine;
-    private bool canBeStunned = true;
+    private bool isStunned = false;
 
     public PlayerControl Target { get => target; }
     public EnemyAnimator EnemyAnimator { get => enemyAnimator; }
     public HealthComponent Health { get => health; }
     public CharacterAttack AttackNormal { get => attackNormal; }
     public CharacterAttack AttackHeavy { get => attackHeavy; }
+    public bool IsStunned { get => isStunned; }
 
     private void Awake()
     {
@@ -50,7 +51,7 @@ public class EnemyControl : CharacterControl
 
     public void Stun(float stunTime)
     {
-        if (!canBeStunned || health.Depleted)
+        if (isStunned || health.Depleted)
             return;
 
         StartCoroutine(StunRoutine(stunTime));
@@ -92,16 +93,18 @@ public class EnemyControl : CharacterControl
 
     private IEnumerator StunRoutine(float stunTime)
     {
-        canBeStunned = false;
+        isStunned = true;
+        isStaggered = true;
         float timer = stunTime;
-        float speed = .1f;
+        float bounceBackTimer = timer / 2;
+        float speed = 1f;
         characterMovement.CanMove = false;
         health.IsInvincible = true;
 
         enemyAnimator.StunAnimation();
 
-        // Bounce back for a third of the time...
-        while (timer > timer / 3)
+        // Bounce back for a while
+        while (timer > bounceBackTimer)
         {
             timer -= Time.deltaTime;
             transform.position += speed * Time.deltaTime * interactingCharacterDirection;
@@ -110,7 +113,7 @@ public class EnemyControl : CharacterControl
 
         enemyAnimator.StunToIdleAnimation();
 
-        //...then get up and stand in position for the remaining time.
+        // Stay in place for a while
         while (timer > .0f)
         {
             timer -= Time.deltaTime;
@@ -119,7 +122,8 @@ public class EnemyControl : CharacterControl
 
         characterMovement.CanMove = true;
         health.IsInvincible = false;
-        canBeStunned = true;
+        isStunned = false;
+        isStaggered = false;
         yield return null;
     }
 }

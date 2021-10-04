@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -68,11 +67,10 @@ public class LevelManager : MonoBehaviour
     public void EnemyDied()
     {
         activeEnemiesCount = Mathf.Clamp(--activeEnemiesCount, 0, activeEnemiesCount);
-        if (activeEnemiesCount == 0)
+        bool allEnemiesDied = activeEnemiesCount == 0;
+        if (allEnemiesDied)
         {
-            currentIndex = Mathf.Clamp(++currentIndex, 0, wavesPosition.Count);
-            cameraController.LockCamera(false);
-            canStartWave = true;
+            EndWave();
         }
     }
 
@@ -95,6 +93,16 @@ public class LevelManager : MonoBehaviour
         newEnemy.Init(this, player, startingPosition);
         enemies.Add(newEnemy);
         ++activeEnemiesCount;
+    }
+
+    private void EndWave()
+    {
+        currentIndex = Mathf.Clamp(++currentIndex, 0, wavesPosition.Count);
+        if (currentIndex != wavesPosition.Count)
+        {
+            cameraController.LockCamera(false);
+            canStartWave = true;
+        }
     }
 
     private IEnumerator StartWaveRoutine()
