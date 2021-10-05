@@ -9,11 +9,15 @@ public class HealthComponent : MonoBehaviour
     private bool isInvincible = false;
     private Action onHealthDepleted;
     private Action onDamageReceived;
+    private Action<float> onDamageTaken;
 
     public Action OnHealthDepleted { get => onHealthDepleted; set => onHealthDepleted = value; }
     public Action OnDamageReceived { get => onDamageReceived; set => onDamageReceived = value; }
+    public Action<float> OnDamageTaken { get => onDamageTaken; set => onDamageTaken = value; }
     public bool IsInvincible { get => isInvincible; set => isInvincible = value; }
     public bool Depleted { get => healthDepleted; }
+    public float TotalValue { get => totalValue; }
+    public float Value { get => value; }
 
     public void Set(float healthValue)
     {
@@ -39,6 +43,8 @@ public class HealthComponent : MonoBehaviour
 
         if (!healthDepleted)
         {
+            onDamageTaken?.Invoke(value);
+
             if (value <= 0.0f)
             {
                 onHealthDepleted?.Invoke();

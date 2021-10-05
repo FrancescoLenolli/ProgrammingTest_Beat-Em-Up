@@ -20,7 +20,7 @@ namespace CoreCharacter
 
         public bool IsStaggered { get => isStaggered; set => isStaggered = value; }
 
-        private void Start()
+        private void Awake()
         {
             SetUp();
         }

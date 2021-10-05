@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UIFramework.StateMachine;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour
     [Tooltip("On what positions can a Wave of enemies start.")]
     [SerializeField]
     private List<Transform> wavesPosition = new List<Transform>();
+    [SerializeField]
+    private UIStateMachine uiStateMachine = null;
 
     private PlayerControl player;
     private Vector3 startingPosition;
@@ -39,8 +43,14 @@ public class LevelManager : MonoBehaviour
     private bool canStartWave;
     private bool canRestartLevel;
     private List<EnemyControl> enemies = new List<EnemyControl>();
+    private Action<List<EnemyControl>> onStartWave;
+    private Action onEndWave;
 
-    private void Awake()
+    public Action<List<EnemyControl>> OnStartWave { get => onStartWave; set => onStartWave = value; }
+    public Action OnEndWave { get => onEndWave; set => onEndWave = value; }
+    public int EnemyCount { get => enemyCount; }
+
+    private void Start()
     {
         player = FindObjectOfType<PlayerControl>();
         startingPosition = player.transform.position;
@@ -48,6 +58,7 @@ public class LevelManager : MonoBehaviour
         canRestartLevel = true;
         currentIndex = 0;
         cameraController.SetUp(lowerLimit, upperLimit, player.transform);
+        uiStateMachine.StartMachine();
     }
 
     private void Update()
@@ -75,20 +86,22 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void SpawnEnemy(float leftPosition, float righPosition)
+    private EnemyControl SpawnEnemy(float leftPosition, float righPosition)
     {
-        float positionY = cameraController.transform.position.y + Random.Range(-.2f, .2f);
+        float positionY = cameraController.transform.position.y + UnityEngine.Random.Range(-.2f, .2f);
         float positionOffset = .5f;
 
         // Randomly decide if enemies should spawn on the left or right of the camera viewport.
         // Add an offset to spawn them outside the camera viewport.
-        float cameraLimit = Random.Range(0, 2) == 0 ? righPosition + positionOffset : leftPosition - positionOffset;
+        float cameraLimit = UnityEngine.Random.Range(0, 2) == 0 ? righPosition + positionOffset : leftPosition - positionOffset;
         Vector3 startingPosition = new Vector3(cameraLimit, positionY, 0);
 
         EnemyControl newEnemy = Instantiate(prefabEnemy);
+        newEnemy.name = "Enemy";
         newEnemy.Init(this, player, startingPosition);
-        enemies.Add(newEnemy);
         ++activeEnemiesCount;
+
+        return newEnemy;
     }
 
     private void EndWave()
@@ -99,6 +112,8 @@ public class LevelManager : MonoBehaviour
             cameraController.LockCamera(false);
             canStartWave = true;
         }
+
+        onEndWave?.Invoke();
     }
 
     private IEnumerator StartWaveRoutine()
@@ -107,12 +122,17 @@ public class LevelManager : MonoBehaviour
         cameraController.LockCamera(true);
         float cameraRightLimitX = cameraController.GetRightLimit().x;
         float cameraLeftLimitX = cameraController.GetLeftLimit().x;
+        List<EnemyControl> newEnemies = new List<EnemyControl>();
 
         for (int i = 0; i < enemyCount; ++i)
         {
-            SpawnEnemy(cameraLeftLimitX, cameraRightLimitX);
+            EnemyControl enemy = SpawnEnemy(cameraLeftLimitX, cameraRightLimitX);
+            enemies.Add(enemy);
+            newEnemies.Add(enemy);
             yield return new WaitForSeconds(spawnDelay);
         }
+
+        onStartWave?.Invoke(newEnemies);
 
         yield return null;
     }
