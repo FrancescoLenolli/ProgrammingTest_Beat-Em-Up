@@ -12,7 +12,7 @@ public class UIRoot_HUD : UIRoot
     [SerializeField]
     private PlayerControl player = null;
 
-    public UIView_HUD_Main HUDMain { get => hudMain; }
+    public UIView_HUD_Main ViewMain { get => hudMain; }
     public LevelManager LevelManager { get => levelManager; }
     public PlayerControl Player { get => player; }
 }

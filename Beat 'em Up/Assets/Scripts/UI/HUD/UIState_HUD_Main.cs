@@ -10,7 +10,7 @@ public class UIState_HUD_Main : UIState_HUD
     {
         base.PrepareState(owner);
 
-        view = root.HUDMain;
+        view = root.ViewMain;
         levelManager = root.LevelManager;
         view.InitHealthBars(root.Player, levelManager.EnemyCount);
         levelManager = root.LevelManager;
