@@ -34,7 +34,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private List<Transform> wavesPosition = new List<Transform>();
     [SerializeField]
-    private UIStateMachine uiStateMachine = null;
+    private UIStateMachine hudStateMachine = null;
 
     private PlayerControl player;
     private Vector3 startingPosition;
@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         canRestartLevel = true;
         currentIndex = 0;
         cameraController.SetUp(lowerLimit, upperLimit, player.transform);
-        uiStateMachine.StartMachine();
+        hudStateMachine.FirstStart();
     }
 
     private void Update()

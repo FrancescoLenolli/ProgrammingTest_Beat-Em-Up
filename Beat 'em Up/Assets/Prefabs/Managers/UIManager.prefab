@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyable: 1
-  optionsMenuPrefab: {fileID: 0}
+  optionsMenuPrefab: {fileID: 8108053918354884476, guid: 3f3f22b4d45845347ac8e6e418b3473d,
+    type: 3}

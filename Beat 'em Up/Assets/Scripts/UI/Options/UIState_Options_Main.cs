@@ -15,12 +15,22 @@ public class UIState_Options_Main : UIState_Options
         view = root.ViewMain;
         rootObject = root.gameObject;
         view.OnCloseOptions += CloseOptions;
-        Time.timeScale = 0;
+    }
+
+    public override void ShowState()
+    {
+        view.ShowView();
+    }
+
+    public override void HideState()
+    {
+        view.HideView();
     }
 
     private void CloseOptions()
     {
         Time.timeScale = 1;
-        Destroy(rootObject);
+        HideState();
+        UIManager.Instance.OptionsOpen = false;
     }
 }
