@@ -33,8 +33,13 @@ public class StatusBar : MonoBehaviour
         slider.Init(statusValues.minValue, statusValues.maxValue, statusValues.currentValue, false);
     }
 
-    public void SetValue(float value)
+    public void SetSliderValue(float value)
     {
         slider.SetValue(value);
+    }
+
+    public void ResetSliderValue()
+    {
+        slider.ResetValue();
     }
 }

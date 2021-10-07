@@ -16,12 +16,6 @@ public class LevelManager : MonoBehaviour
     [Tooltip("Enemies spawn each x seconds.")]
     [SerializeField]
     private float spawnDelay = .2f;
-    [Tooltip("Set to TRUE to wait on player input to restart level.\nIf set to FALSE, use the 'Restart Delay' property to set the restart wait time.")]
-    [SerializeField]
-    private bool restartOnPlayerInput = false;
-    [Min(0)]
-    [SerializeField]
-    private float restartDelay = .5f;
     [SerializeField]
     private CameraController cameraController = null;
     [Tooltip("Bottom left of the current Level.")]
@@ -41,21 +35,29 @@ public class LevelManager : MonoBehaviour
     private int currentIndex;
     private int activeEnemiesCount;
     private bool canStartWave;
-    private bool canRestartLevel;
+    private bool canContinueGame;
+    private bool levelEnded;
+    private bool levelCompleted;
     private List<EnemyControl> enemies = new List<EnemyControl>();
     private Action<List<EnemyControl>> onStartWave;
     private Action onEndWave;
+    private Action onLevelReset;
+    private Action<bool> onLevelCompleted;
 
     public Action<List<EnemyControl>> OnStartWave { get => onStartWave; set => onStartWave = value; }
     public Action OnEndWave { get => onEndWave; set => onEndWave = value; }
+    public Action<bool> OnLevelCompleted { get => onLevelCompleted; set => onLevelCompleted = value; }
     public int EnemyCount { get => enemyCount; }
+    public Action OnLevelReset { get => onLevelReset; set => onLevelReset = value; }
 
     private void Start()
     {
         player = FindObjectOfType<PlayerControl>();
         startingPosition = player.transform.position;
         canStartWave = true;
-        canRestartLevel = true;
+        canContinueGame = true;
+        levelEnded = false;
+        levelCompleted = false;
         currentIndex = 0;
         cameraController.SetUp(lowerLimit, upperLimit, player.transform);
         hudStateMachine.FirstStart();
@@ -66,8 +68,24 @@ public class LevelManager : MonoBehaviour
         if (!player)
             return;
 
-        if (!player.IsAlive && canRestartLevel)
-            StartCoroutine(ResetLevelRoutine());
+        if(canContinueGame && !levelEnded)
+        {
+            bool playerDead = !player.IsAlive;
+            bool currentLevelCompleted = player.IsAlive && currentIndex >= wavesPosition.Count;
+
+            if (playerDead)
+            {
+                levelEnded = true;
+                levelCompleted = false;
+                onLevelCompleted?.Invoke(levelCompleted);
+            }
+            else if(currentLevelCompleted)
+            {
+                levelEnded = true;
+                levelCompleted = true;
+                onLevelCompleted?.Invoke(levelCompleted);
+            }
+        }
 
         bool canStartNextWave = currentIndex != wavesPosition.Count && player.transform.position.x >= wavesPosition[currentIndex].localPosition.x && canStartWave;
         if (!canStartNextWave)
@@ -84,6 +102,19 @@ public class LevelManager : MonoBehaviour
         {
             EndWave();
         }
+    }
+
+    public void ContinueGame()
+    {
+        /*
+         * If more levels are added, change Scene when
+         * the current level is completed instead of restarting it.
+         */
+
+        if (!levelCompleted)
+            StartCoroutine(ResetLevelRoutine());
+        else
+            StartCoroutine(ResetLevelRoutine());
     }
 
     private EnemyControl SpawnEnemy(float leftPosition, float righPosition)
@@ -139,14 +170,8 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator ResetLevelRoutine()
     {
-        canRestartLevel = false;
+        canContinueGame = false;
         canStartWave = false;
-
-        if (restartOnPlayerInput)
-            while (!Input.GetKeyDown(KeyCode.R))
-                yield return null;
-        else
-            yield return new WaitForSeconds(restartDelay);
 
         enemies.ForEach(enemy => Destroy(enemy.gameObject));
         enemies.Clear();
@@ -154,8 +179,11 @@ public class LevelManager : MonoBehaviour
         activeEnemiesCount = 0;
         cameraController.LockCamera(false);
         player.Restart(startingPosition);
+        onLevelReset?.Invoke();
+
         canStartWave = true;
-        canRestartLevel = true;
+        canContinueGame = true;
+        levelEnded = false;
 
         yield return null;
     }

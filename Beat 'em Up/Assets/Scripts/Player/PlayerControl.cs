@@ -31,7 +31,6 @@ public class PlayerControl : CharacterControl
         health.Revive();
         playerAnimator.DeathToIdleAnimation();
         characterMovement.CanMove = true;
-        Debug.Log("Can Move");
         playerAnimator.CanAnimateMovement = true;
     }
 
@@ -44,8 +43,8 @@ public class PlayerControl : CharacterControl
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
         characterInput.ActionMove += playerAnimator.HandleAnimation;
-        characterInput.Action1 += attackNormal.StartAttack;
-        characterInput.Action2 += attackHeavy.StartAttack;
+        characterInput.Action1 += NormalAttack;
+        characterInput.Action2 += HeavyAttack;
         attackNormal.OnAttack += playerAnimator.AttackAnimation;
         attackHeavy.OnAttack += playerAnimator.AttackHeavyAnimation;
         health.OnDamageReceived += playerAnimator.HitAnimation;
@@ -60,6 +59,18 @@ public class PlayerControl : CharacterControl
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         playerAnimator = CharacterUtilities.TryGetComponent<PlayerAnimator>(gameObject);
+    }
+
+    private void NormalAttack()
+    {
+        if (isAlive)
+            attackNormal.StartAttack();
+    }
+
+    private void HeavyAttack()
+    {
+        if (isAlive)
+            attackHeavy.StartAttack();
     }
 
     private void Stagger()

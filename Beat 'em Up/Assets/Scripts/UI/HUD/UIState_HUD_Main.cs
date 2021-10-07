@@ -16,6 +16,7 @@ public class UIState_HUD_Main : UIState_HUD
         levelManager = root.LevelManager;
         levelManager.OnStartWave += ShowEnemyBars;
         levelManager.OnEndWave += HideEnemyBars;
+        levelManager.OnLevelReset += ResetHUD;
     }
 
     public void ShowEnemyBars(List<EnemyControl> enemies)
@@ -26,5 +27,10 @@ public class UIState_HUD_Main : UIState_HUD
     public void HideEnemyBars()
     {
         view.HideEnemyBars();
+    }
+
+    private void ResetHUD()
+    {
+        view.ResetHUD();
     }
 }

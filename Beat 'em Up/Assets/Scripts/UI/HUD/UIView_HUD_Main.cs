@@ -44,4 +44,10 @@ public class UIView_HUD_Main : UIView
     {
         enemyHealthBarsContainer.gameObject.SetActive(false);
     }
+
+    public void ResetHUD()
+    {
+        playerHealthBar.ResetSliderValue();
+        HideEnemyBars();
+    }
 }
