@@ -173,8 +173,8 @@ MonoBehaviour:
   characterMovement: {fileID: 0}
   interactingCharacterDirection: {x: 0, y: 0, z: 0}
   debug: 0
-  healthValue: 12
-  staggerTime: 0.6
+  healthValue: 1
+  staggerTime: 0.5
   attackNormal: {fileID: 2320974336520750193}
   attackHeavy: {fileID: 9121211904503374207}
 --- !u!114 &5353435600787058364

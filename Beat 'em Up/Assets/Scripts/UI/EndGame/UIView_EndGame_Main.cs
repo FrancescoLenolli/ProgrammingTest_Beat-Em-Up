@@ -30,6 +30,7 @@ public class UIView_EndGame_Main : UIView
 
     public override void ShowView()
     {
+        // View needs to be hidden at the start.
         if (isLevelCompleted != null)
             base.ShowView();
     }

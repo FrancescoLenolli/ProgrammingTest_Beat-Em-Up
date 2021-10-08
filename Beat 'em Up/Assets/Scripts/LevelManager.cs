@@ -68,30 +68,11 @@ public class LevelManager : MonoBehaviour
         if (!player)
             return;
 
-        if(canContinueGame && !levelEnded)
-        {
-            bool playerDead = !player.IsAlive;
-            bool currentLevelCompleted = player.IsAlive && currentIndex >= wavesPosition.Count;
-
-            if (playerDead)
-            {
-                levelEnded = true;
-                levelCompleted = false;
-                onLevelCompleted?.Invoke(levelCompleted);
-            }
-            else if(currentLevelCompleted)
-            {
-                levelEnded = true;
-                levelCompleted = true;
-                onLevelCompleted?.Invoke(levelCompleted);
-            }
-        }
+        LevelEndedCheck();
 
         bool canStartNextWave = currentIndex != wavesPosition.Count && player.transform.position.x >= wavesPosition[currentIndex].localPosition.x && canStartWave;
-        if (!canStartNextWave)
-            return;
-
-        StartCoroutine(StartWaveRoutine());
+        if (canStartNextWave)
+            StartCoroutine(StartWaveRoutine());
     }
 
     public void EnemyDied()
@@ -115,6 +96,31 @@ public class LevelManager : MonoBehaviour
             StartCoroutine(ResetLevelRoutine());
         else
             StartCoroutine(ResetLevelRoutine());
+    }
+
+    /// <summary>
+    /// Check if the level has ended, and what happens after that.
+    /// </summary>
+    private void LevelEndedCheck()
+    {
+        if (canContinueGame && !levelEnded)
+        {
+            bool playerDead = !player.IsAlive;
+            bool currentLevelCompleted = player.IsAlive && currentIndex >= wavesPosition.Count;
+
+            if (playerDead)
+            {
+                levelEnded = true;
+                levelCompleted = false;
+                onLevelCompleted?.Invoke(levelCompleted);
+            }
+            else if (currentLevelCompleted)
+            {
+                levelEnded = true;
+                levelCompleted = true;
+                onLevelCompleted?.Invoke(levelCompleted);
+            }
+        }
     }
 
     private EnemyControl SpawnEnemy(float leftPosition, float righPosition)

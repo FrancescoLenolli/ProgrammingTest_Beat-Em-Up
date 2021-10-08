@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UIFramework.StateMachine;
-using UnityEngine;
 
 public class UIView_Options_Main : UIView
 {

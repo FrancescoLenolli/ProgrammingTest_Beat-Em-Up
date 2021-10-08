@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UIFramework.StateMachine;
+﻿using UIFramework.StateMachine;
 using UnityEngine;
 
 public class UIRoot_Options : UIRoot

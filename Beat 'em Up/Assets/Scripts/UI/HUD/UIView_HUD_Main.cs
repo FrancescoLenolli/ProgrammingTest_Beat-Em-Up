@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UIFramework.StateMachine;
 using UnityEngine;
 
@@ -14,17 +13,10 @@ public class UIView_HUD_Main : UIView
 
     private List<StatusBar> enemyBars = new List<StatusBar>();
 
-    public void InitHealthBars(PlayerControl player, int enemiesCount)
+    public void InitHealthBars(PlayerControl player, int enemyCount)
     {
-        StatusValues playerValues = new StatusValues(player.name, 0, player.Health.TotalValue, player.Health.Value);
-        playerHealthBar.Init(playerValues);
-        player.Health.OnDamageTaken += playerHealthBar.Slider.SetValue;
-
-        for (int i = 0; i < enemiesCount; ++i)
-        {
-            enemyBars.Add(Instantiate(statusBarPrefab, enemyHealthBarsContainer));
-            enemyBars[i].Slider.transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
+        InitPlayerHealthBar(player);
+        InitEnemyHealthBars(enemyCount);
     }
 
     public void ShowEnemyBars(List<EnemyControl> enemies)
@@ -49,5 +41,21 @@ public class UIView_HUD_Main : UIView
     {
         playerHealthBar.ResetSliderValue();
         HideEnemyBars();
+    }
+
+    private void InitPlayerHealthBar(PlayerControl player)
+    {
+        StatusValues playerValues = new StatusValues(player.name, 0, player.Health.TotalValue, player.Health.Value);
+        playerHealthBar.Init(playerValues);
+        player.Health.OnDamageTaken += playerHealthBar.Slider.SetValue;
+    }
+
+    private void InitEnemyHealthBars(int enemyCount)
+    {
+        for (int i = 0; i < enemyCount; ++i)
+        {
+            enemyBars.Add(Instantiate(statusBarPrefab, enemyHealthBarsContainer));
+            enemyBars[i].Slider.transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
     }
 }

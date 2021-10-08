@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UIFramework.StateMachine;
-using UnityEngine;
+﻿using UIFramework.StateMachine;
 
 public class UIState_Options : UIState
 {

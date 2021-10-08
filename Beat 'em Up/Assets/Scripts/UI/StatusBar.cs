@@ -2,6 +2,9 @@
 using UIFramework;
 using UnityEngine;
 
+/// <summary>
+/// Base StatusBar values.
+/// </summary>
 public struct StatusValues
 {
     public string ownerName;
@@ -18,6 +21,9 @@ public struct StatusValues
     }
 }
 
+/// <summary>
+/// Display a givend Character stat. Can be used to display health, stamina, etc...
+/// </summary>
 public class StatusBar : MonoBehaviour
 {
     [SerializeField]
@@ -38,6 +44,9 @@ public class StatusBar : MonoBehaviour
         slider.SetValue(value);
     }
 
+    /// <summary>
+    /// Reset StatusBar to starting value.
+    /// </summary>
     public void ResetSliderValue()
     {
         slider.ResetValue();
