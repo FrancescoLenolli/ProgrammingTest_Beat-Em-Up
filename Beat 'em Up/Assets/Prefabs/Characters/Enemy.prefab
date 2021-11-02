@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 5353435600787058367}
   - component: {fileID: 2320974336520750193}
   - component: {fileID: 9121211904503374207}
+  - component: {fileID: 6643412046818816334}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
@@ -173,7 +174,7 @@ MonoBehaviour:
   characterMovement: {fileID: 0}
   interactingCharacterDirection: {x: 0, y: 0, z: 0}
   debug: 0
-  healthValue: 12
+  healthValue: 1
   staggerTime: 0.5
   attackNormal: {fileID: 2320974336520750193}
   attackHeavy: {fileID: 9121211904503374207}
@@ -240,3 +241,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackValues: {fileID: 11400000, guid: 04a4d7fb8202b9d4eb80298d92c5a3e9, type: 2}
+--- !u!114 &6643412046818816334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353435600787058357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41c78d46468c73408caf2ea61fe216d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformHalfHeight: 0.3

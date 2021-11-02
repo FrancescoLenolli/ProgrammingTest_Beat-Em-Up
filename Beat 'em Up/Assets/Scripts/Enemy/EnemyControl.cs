@@ -23,6 +23,7 @@ public class EnemyControl : CharacterControl
     private PlayerControl target;
     private HealthComponent health;
     private StateMachine stateMachine;
+    private RenderOrder renderOrder;
     private bool isStunned = false;
 
     public PlayerControl Target { get => target; }
@@ -75,9 +76,10 @@ public class EnemyControl : CharacterControl
     {
         base.GetComponents();
         animator = GetComponent<Animator>();
+        stateMachine = GetComponent<StateMachine>();
+        renderOrder = GetComponent<RenderOrder>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         enemyAnimator = CharacterUtilities.TryGetComponent<EnemyAnimator>(gameObject);
-        stateMachine = GetComponent<StateMachine>();
     }
 
     private void Stagger()
@@ -89,6 +91,7 @@ public class EnemyControl : CharacterControl
     {
         stateMachine.Stop();
         enemyAnimator.DeathAnimation();
+        renderOrder.ResetHalfHeight();
     }
 
     private IEnumerator StunRoutine(float stunTime)

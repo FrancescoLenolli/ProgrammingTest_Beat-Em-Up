@@ -18,6 +18,7 @@ public class PlayerControl : CharacterControl
     private Animator animator;
     private PlayerAnimator playerAnimator;
     private HealthComponent health;
+    private RenderOrder renderOrder;
 
     public HealthComponent Health { get => health; set => health = value; }
     public CharacterAttack AttackNormal { get => attackNormal; set => attackNormal = value; }
@@ -32,6 +33,7 @@ public class PlayerControl : CharacterControl
         playerAnimator.DeathToIdleAnimation();
         characterMovement.CanMove = true;
         playerAnimator.CanAnimateMovement = true;
+        renderOrder.ResetHalfHeight();
     }
 
     protected override void SetUp()
@@ -56,6 +58,7 @@ public class PlayerControl : CharacterControl
     {
         base.GetComponents();
         animator = GetComponent<Animator>();
+        renderOrder = GetComponent<RenderOrder>();
         health = CharacterUtilities.TryGetComponent<HealthComponent>(gameObject);
         characterInput = CharacterUtilities.TryGetComponent<CharacterInput>(gameObject);
         playerAnimator = CharacterUtilities.TryGetComponent<PlayerAnimator>(gameObject);
@@ -84,5 +87,6 @@ public class PlayerControl : CharacterControl
         characterMovement.CanMove = false;
         playerAnimator.CanAnimateMovement = false;
         playerAnimator.DeathAnimation();
+        renderOrder.ResetHalfHeight();
     }
 }
