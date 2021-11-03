@@ -82,6 +82,16 @@ public class EnemyControl : CharacterControl
         enemyAnimator = CharacterUtilities.TryGetComponent<EnemyAnimator>(gameObject);
     }
 
+    private void NormalAttack()
+    {
+        attackNormal.Attack();
+    }
+
+    private void HeavyAttack()
+    {
+        attackHeavy.Attack();
+    }
+
     private void Stagger()
     {
         BounceBack(staggerTime);

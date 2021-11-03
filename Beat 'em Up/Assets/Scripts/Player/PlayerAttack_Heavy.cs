@@ -6,7 +6,7 @@ public class PlayerAttack_Heavy : CharacterAttack
     [SerializeField]
     private float stunTime = 1.0f;
 
-    protected override RaycastHit2D[] Attack()
+    public override RaycastHit2D[] Attack()
     {
         RaycastHit2D[] hits = base.Attack();
 

@@ -20,7 +20,6 @@ public class CharacterAttack : MonoBehaviour
         {
             ResetTimer();
             canAttack = false;
-            Attack();
         }
     }
 
@@ -32,12 +31,14 @@ public class CharacterAttack : MonoBehaviour
     public void StartAttack()
     {
         if (attackTimer <= 0)
+        {
             canAttack = true;
+            onAttack?.Invoke();
+        }
     }
 
-    protected virtual RaycastHit2D[] Attack()
+    public virtual RaycastHit2D[] Attack()
     {
-        onAttack?.Invoke();
         Vector3 origin = transform.position;
         RaycastHit2D[] hits = Physics2D.RaycastAll(origin, transform.right, attackValues.range);
 

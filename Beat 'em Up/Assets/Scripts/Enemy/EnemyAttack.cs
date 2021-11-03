@@ -2,7 +2,7 @@
 
 public class EnemyAttack : CharacterAttack
 {
-    protected override RaycastHit2D[] Attack()
+    public override RaycastHit2D[] Attack()
     {
         RaycastHit2D[] hits = base.Attack();
 

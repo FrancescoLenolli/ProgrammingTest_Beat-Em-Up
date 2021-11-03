@@ -45,8 +45,8 @@ public class PlayerControl : CharacterControl
         characterInput.ActionMove += characterMovement.HandleMovement;
         characterInput.ActionJump += characterMovement.SetJump;
         characterInput.ActionMove += playerAnimator.HandleAnimation;
-        characterInput.Action1 += NormalAttack;
-        characterInput.Action2 += HeavyAttack;
+        characterInput.Action1 += attackNormal.StartAttack;
+        characterInput.Action2 += attackHeavy.StartAttack;
         attackNormal.OnAttack += playerAnimator.AttackAnimation;
         attackHeavy.OnAttack += playerAnimator.AttackHeavyAnimation;
         health.OnDamageReceived += playerAnimator.HitAnimation;
@@ -67,13 +67,13 @@ public class PlayerControl : CharacterControl
     private void NormalAttack()
     {
         if (isAlive)
-            attackNormal.StartAttack();
+            attackNormal.Attack();
     }
 
     private void HeavyAttack()
     {
         if (isAlive)
-            attackHeavy.StartAttack();
+            attackHeavy.Attack();
     }
 
     private void Stagger()
