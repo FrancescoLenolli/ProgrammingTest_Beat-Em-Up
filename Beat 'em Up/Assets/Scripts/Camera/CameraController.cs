@@ -11,32 +11,20 @@ public class CameraController : MonoBehaviour
 
     private Camera mainCamera;
     private Transform targetTransform;
-    private Vector2 positionXLimit;
-    private Vector2 positionYLimit;
-    private bool isCameraLocked;
     private CinemachineVirtualCamera virtualCamera;
 
     private void Awake()
     {
         if (debug)
             DebugSetUp();
-        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-        virtualCamera.Follow = FindObjectOfType<PlayerControl>().transform;
     }
 
-    private void LateUpdate()
-    {
-        if (!targetTransform || isCameraLocked)
-            return;
-
-        //MoveCamera();
-    }
-
-    public void SetUp(Transform lowerLimit, Transform upperLimit, Transform targetTransform)
+    public void SetUp(Transform targetTransform)
     {
         this.targetTransform = targetTransform;
-        mainCamera = GetComponent<Camera>();
-        SetCameraLimits(lowerLimit.position, upperLimit.position);
+        mainCamera = Camera.main;
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        virtualCamera.Follow = targetTransform;
     }
 
     /// <summary>
@@ -45,8 +33,7 @@ public class CameraController : MonoBehaviour
     /// <param name="lockCamera"></param>
     public void LockCamera(bool lockCamera)
     {
-        //isCameraLocked = lockCamera;
-        virtualCamera.Follow = lockCamera ? null : FindObjectOfType<PlayerControl>().transform;
+        virtualCamera.Follow = lockCamera ? null : targetTransform;
     }
 
     public Vector3 GetRightLimit()
@@ -61,35 +48,11 @@ public class CameraController : MonoBehaviour
         return new Vector3(transform.position.x - cameraHorizontalSize, transform.position.y, 0);
     }
 
-    /// <summary>
-    /// Camera should not move outside these limits.
-    /// </summary>
-    /// <param name="lowLimit"></param> The bottom left of the current Level.
-    /// <param name="highLimit"></param> The top right of the current Level.
-    private void SetCameraLimits(Vector3 lowLimit, Vector3 highLimit)
-    {
-        // OrthographicSize = height of a camera with an Ortographic viewport.
-        float cameraSize = mainCamera.orthographicSize;
-
-        positionXLimit = new Vector2(lowLimit.x + (cameraSize * 2), highLimit.x - (cameraSize * 2));
-        positionYLimit = new Vector2(lowLimit.y + cameraSize, highLimit.y - cameraSize);
-    }
-
-    private void MoveCamera()
-    {
-        float positionX = Mathf.Clamp(targetTransform.position.x, positionXLimit.x, positionXLimit.y);
-        float positionY = Mathf.Clamp(targetTransform.position.y, positionYLimit.x, positionYLimit.y);
-
-        transform.position = new Vector3(positionX, positionY, transform.position.z);
-    }
-
+    // Set up the camera without the need of a LevelManager
     private void DebugSetUp()
     {
-        mainCamera = GetComponent<Camera>();
-        Transform lowerLimit = GameObject.Find("LowerLimit").transform;
-        Transform upperLimit = GameObject.Find("UpperLimit").transform;
-        SetCameraLimits(lowerLimit.position, upperLimit.position);
+        mainCamera = Camera.main;
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         targetTransform = FindObjectOfType<PlayerControl>().transform;
-        isCameraLocked = false;
     }
 }

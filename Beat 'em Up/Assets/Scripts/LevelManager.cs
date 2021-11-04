@@ -18,12 +18,6 @@ public class LevelManager : MonoBehaviour
     private float spawnDelay = .2f;
     [SerializeField]
     private CameraController cameraController = null;
-    [Tooltip("Bottom left of the current Level.")]
-    [SerializeField]
-    private Transform lowerLimit = null;
-    [Tooltip("Top right of the current Level.")]
-    [SerializeField]
-    private Transform upperLimit = null;
     [Tooltip("On what positions can a Wave of enemies start.")]
     [SerializeField]
     private List<Transform> wavesPosition = new List<Transform>();
@@ -59,7 +53,7 @@ public class LevelManager : MonoBehaviour
         levelEnded = false;
         levelCompleted = false;
         currentIndex = 0;
-        cameraController.SetUp(lowerLimit, upperLimit, player.transform);
+        cameraController.SetUp(player.transform);
         hudStateMachine.FirstStart();
     }
 
