@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -13,11 +14,14 @@ public class CameraController : MonoBehaviour
     private Vector2 positionXLimit;
     private Vector2 positionYLimit;
     private bool isCameraLocked;
+    private CinemachineVirtualCamera virtualCamera;
 
     private void Awake()
     {
         if (debug)
             DebugSetUp();
+        virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        virtualCamera.Follow = FindObjectOfType<PlayerControl>().transform;
     }
 
     private void LateUpdate()
@@ -25,7 +29,7 @@ public class CameraController : MonoBehaviour
         if (!targetTransform || isCameraLocked)
             return;
 
-        MoveCamera();
+        //MoveCamera();
     }
 
     public void SetUp(Transform lowerLimit, Transform upperLimit, Transform targetTransform)
@@ -41,7 +45,8 @@ public class CameraController : MonoBehaviour
     /// <param name="lockCamera"></param>
     public void LockCamera(bool lockCamera)
     {
-        isCameraLocked = lockCamera;
+        //isCameraLocked = lockCamera;
+        virtualCamera.Follow = lockCamera ? null : FindObjectOfType<PlayerControl>().transform;
     }
 
     public Vector3 GetRightLimit()
